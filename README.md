@@ -18,3 +18,6 @@ Web app (`www/index.html`) wrapped with Capacitor, Firebase Auth + Firestore for
 - `.github/workflows/android.yml` the build workflow
 - `scripts/copy-vendor.js` copies the Firebase bundles into `www/vendor`
 - `capacitor.config.json`, `package.json`, `firestore.rules`
+
+## SpeechCare AI
+The app includes a focused Gemini-powered assistant. See `AI_SETUP.md` for the secure Firebase Functions setup. The Gemini secret must never be committed to GitHub or placed in the APK.

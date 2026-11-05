@@ -11,7 +11,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 #shell{max-width:520px;margin:0 auto;min-height:100vh}
 #hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;display:flex;align-items:center;gap:6px;padding:8px 10px;background:var(--card);border-bottom:1px solid var(--line)}
 #hd h1{flex:1;margin:0;font-size:18px}
-.ib{position:relative;width:40px;height:40px;border-radius:12px;border:0;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.ib{position:relative;width:40px;height:40px;border-radius:12px;border:0;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}.aihead{height:34px;padding:0 10px;border:1px solid color-mix(in srgb,var(--pri) 45%,var(--line));border-radius:12px;background:var(--chip);color:var(--pri);font-weight:700;display:flex;align-items:center;gap:4px;cursor:pointer}.aihead svg{flex:none}
 .bd{position:absolute;top:2px;right:0;background:var(--red);color:#fff;font-size:10px;font-style:normal;border-radius:10px;min-width:17px;padding:1px 4px;text-align:center}
 #app{padding:12px 14px 100px;overflow-x:hidden}
 .view{animation:vr .32s cubic-bezier(.2,.8,.2,1)}.view.l{animation-name:vl}.view.still{animation:none}
@@ -44,6 +44,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--pri);border-colo
 .dn circle{animation:dn 1s ease-out}@keyframes dn{from{stroke-dasharray:0 100}}
 .ck{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px}.ck label{display:flex;gap:6px;align-items:center;color:var(--ink)}.ck input{width:auto;margin:0}
 details{margin:4px 0}summary{cursor:pointer;font-weight:600}
+/* ---------- SpeechCare AI ---------- */
+.aihero{background:linear-gradient(135deg,#5b3f8c,#0f7a72);color:#fff;border-radius:22px;padding:18px;margin-bottom:12px}.aihero h2{margin:0 0 4px;font-size:21px}.aihero p{margin:0;color:#ffffffd9;font-size:13px}.aichat{display:flex;flex-direction:column;gap:10px;margin-bottom:100px}.aimsg{max-width:88%;padding:11px 13px;border-radius:16px;white-space:pre-wrap;line-height:1.55;font-size:14px}.aimsg.user{align-self:flex-end;background:var(--pri);color:#fff;border-bottom-right-radius:5px}.aimsg.ai{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:5px}.aibar{position:fixed;bottom:calc(58px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:min(520px,100%);padding:8px 12px;background:var(--bg);border-top:1px solid var(--line);z-index:7}.aibar .row{flex-wrap:nowrap}.aibar textarea{min-height:44px;max-height:120px;margin:0;resize:none}.aibar button{flex:none}.aiquick{display:flex;gap:7px;overflow:auto;padding-bottom:5px}.aiquick button{white-space:nowrap}.aipill{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:7px 11px;color:var(--ink)}
 nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:8}nav div{display:flex;max-width:520px;margin:0 auto;padding:6px 6px 4px}
 nav button{flex:1;background:none;border:0;font-size:11px;color:var(--mut);padding:4px 0;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:2px}nav .on{color:var(--pri);background:var(--chip);font-weight:700}
 .fab{position:fixed;right:max(16px,calc(50% - 244px));bottom:calc(78px + env(safe-area-inset-bottom,0px));height:54px;border-radius:27px;padding:0 20px;z-index:7;display:flex;align-items:center;gap:6px;box-shadow:0 6px 18px #0004;animation:vr .4s}
@@ -74,6 +76,9 @@ nav button{flex:1;background:none;border:0;font-size:11px;color:var(--mut);paddi
 <div class="dr" id="dr"></div><div id="toast"></div>
 <script>
 const FB={apiKey:"AIzaSyDWMO2ixLHk9S8p0g2Kt1Oo4YBrvlvaSI4",authDomain:"oprthophoniste-organisation.firebaseapp.com",projectId:"oprthophoniste-organisation",storageBucket:"oprthophoniste-organisation.firebasestorage.app",messagingSenderId:"738326689129",appId:"1:738326689129:web:052e7a9de200d7819d79f8"};
+// Gemini API key for the private SpeechCare prototype. Replace/revoke this key before public release.
+const GEMINI_API_KEY="AQ.Ab8RN6J0FF1a0AT07gKHXIy5bK3_3FWvck0XOAtlEFT1cOxfWA";
+const GEMINI_MODEL="gemini-2.5-flash";
 const I={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c2 .7 3.5 2.5 3.5 5.5"/>',doc:'<path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/>',menu:'<path d="M4 7h16M4 12h16M4 17h10"/>',bell:'<path d="M6 17v-6a6 6 0 0 1 12 0v6l2 2H4z"/><path d="M10 21a2 2 0 0 0 4 0"/>',plus:'<path d="M12 5v14M5 12h14"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/>',phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',pin:'<path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>',back:'<path d="M15 5l-7 7 7 7"/>',out:'<path d="M10 4H5v16h5M15 8l4 4-4 4M19 12H9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 7l9 6 9-6"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',chev:'<path d="M9 5l7 7-7 7"/>',list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',x2:'<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>'};
 const ic=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
 const C=[
@@ -116,7 +121,7 @@ function seed(){const id=uid();S.me.places=[{n:'Main center',t:'center'},{n:'Lit
 async function enter(u,pv){U=u;K='ortho_'+u.uid;S=load()||mk();if(db&&!pv){try{const d=await db.doc(`users/${u.uid}/app/data`).get();if(d.exists)S=JSON.parse(d.data().json)}catch(e){toast('Offline: showing data saved on this device.')}}
 S.me.name=S.me.name||u.displayName||'';S.me.email=u.email||'';mig();if(pv&&!S.p.length)seed();V.t='home';$('#auth').hidden=true;$('#shell').hidden=false;go();remind()}
 /* ---------- auth ---------- */
-const V={t:'home',pid:null,day:td(),mon:td().slice(0,7),rm:'parent',rp:3,rl:'fr',del:0,per:'day',f:'all',am:'in',dir:0,prev:'home',sq:'',pq:''};
+const V={t:'home',pid:null,day:td(),mon:td().slice(0,7),rm:'parent',rp:3,rl:'fr',del:0,per:'day',f:'all',am:'in',dir:0,prev:'home',sq:'',pq:'',aiMsgs:[],aiBusy:false,aiPatient:'',aiSource:'ai'};
 const ER={'auth/invalid-email':'Enter a valid email address.','auth/user-not-found':'No account with this email.','auth/wrong-password':'Email or password is incorrect.','auth/invalid-credential':'Email or password is incorrect.','auth/email-already-in-use':'This email already has an account. Sign in instead.','auth/weak-password':'Use at least 6 characters.','auth/network-request-failed':'No connection. Check your internet and try again.','auth/too-many-requests':'Too many attempts. Try again in a few minutes.','mismatch':'The two passwords do not match.','empty':'Fill in all fields.'};
 const lo=n=>new Promise(r=>{const a=document.createElement('script');a.src='vendor/'+n+'.js';a.onload=()=>r(1);a.onerror=()=>{const b=document.createElement('script');b.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/'+n+'.min.js';b.onload=()=>r(1);b.onerror=()=>r(0);document.head.appendChild(b)};document.head.appendChild(a)});
 async function boot(){authView();let ok=1;for(const n of['firebase-app-compat','firebase-auth-compat','firebase-firestore-compat'])ok=ok&&await lo(n);
@@ -143,16 +148,24 @@ async function chk(){try{await fa.currentUser.reload();if(fa.currentUser.emailVe
 async function rs(){try{await fa.currentUser.sendEmailVerification();am('Email sent again.','ok')}catch(e){am(ER[e.code]||'Wait a moment before resending.','err')}}
 async function logout(){cd();try{if(fa&&U.uid!='preview')await fa.signOut()}catch(e){}U=null;S=null;V.am='in';authView()}
 /* ---------- shell ---------- */
-const TABS=[['home','home','Home'],['sess','cal','Sessions'],['pats','users','Patients'],['rep','doc','Reports'],['more','menu','More']];
-const MAIN=['home','sess','pats','rep'];
+const TABS=[['home','home','Home'],['sess','cal','Sessions'],['pats','users','Patients'],['ai','chat','AI'],['more','menu','More']];
+const MAIN=['home','sess','pats','rep','ai'];
 function nav(t,d){if(MAIN.includes(V.t)||V.t=='me')V.prev=V.t;V.dir=d||0;V.t=t;V.del=0;cd();go();scrollTo(0,0)}
 const back=()=>nav(V.prev||'home',-1),openPt=id=>{V.pid=id;nav('pat',1)};
-function go(){const t=V.t,v={home,sess,cal,today,pats,pat,rep,me}[t](),mn=MAIN.includes(t)||t=='me';
-const nT=S.a.filter(a=>a.date==td()&&a.status=='scheduled').length,tt={home:'Ortho Assistant',sess:'Sessions',pats:'Patients',rep:'Reports',me:'Profile',cal:'Calendar',today:'Today',pat:'Patient'}[t];
-$('#hd').innerHTML=`<button class=ib onclick="${mn?'od()':'back()'}" aria-label="${mn?'Menu':'Back'}">${ic(mn?'menu':'back',22)}</button><h1>${tt}</h1>${t=='home'?`<button class=ib aria-label="Today" onclick="nav('today',1)">${ic('bell',22)}${nT?`<i class=bd>${nT}</i>`:''}</button>`:t=='sess'?`<button class=ib aria-label="Calendar" onclick="nav('cal',1)">${ic('cal',22)}</button>`:'<span style="width:40px"></span>'}`;
+function openAIFromScreen(){
+  V.aiSource=V.t;
+  if(V.t=='pat' && V.pid) V.aiPatient=V.pid;
+  else if(V.t=='rep' && V.pid) V.aiPatient=V.pid;
+  V.aiMsgs=[];
+  nav('ai',1);
+}
+function aiHeaderButton(){return V.t!='ai'?`<button class=aihead onclick="openAIFromScreen()" aria-label="Open SpeechCare AI">${ic('chat',18)}<span>AI</span></button>`:''}
+function go(){const t=V.t,v={home,sess,cal,today,pats,pat,rep,me,ai}[t](),mn=MAIN.includes(t)||t=='me';
+const nT=S.a.filter(a=>a.date==td()&&a.status=='scheduled').length,tt={home:'Ortho Assistant',sess:'Sessions',pats:'Patients',rep:'Reports',me:'Profile',cal:'Calendar',today:'Today',pat:'Patient',ai:'SpeechCare AI'}[t];
+$('#hd').innerHTML=`<button class=ib onclick="${mn?'od()':'back()'}" aria-label="${mn?'Menu':'Back'}">${ic(mn?'menu':'back',22)}</button><h1>${tt}</h1>${aiHeaderButton()}${t=='home'?`<button class=ib aria-label="Today" onclick="nav('today',1)">${ic('bell',22)}${nT?`<i class=bd>${nT}</i>`:''}</button>`:t=='sess'?`<button class=ib aria-label="Calendar" onclick="nav('cal',1)">${ic('cal',22)}</button>`:'<span style="width:40px"></span>'}`;
 $('#app').innerHTML=`<div class="view ${V.dir<0?'l':V.dir?'':'still'}">${v}</div>`+(['home','sess','pats'].includes(t)?`<button class="b fab" onclick="${t=='pats'?'ptForm()':'apForm()'}">${ic('plus',22)}${t=='pats'?'Patient':'Session'}</button>`:'');
 $("#tabs").innerHTML=TABS.map(x=>`<button class="${x[0]==(t=='pat'?'pats':t)?'on':''}" onclick="${x[0]=='more'?'od()':`nav('${x[0]}',${MAIN.indexOf(x[0])-MAIN.indexOf(V.t)>0?1:-1})`}">${ic(x[1],22)}${x[2]}</button>`).join('');V.dir=0}
-function od(){const m=S.me,q=(V.dq||'').toLowerCase(),it=[['home','home','Dashboard','Overview'],['today','clock','Today’s sessions','Goals and countdown'],['sess','list','Sessions','All appointments'],['cal','cal','Calendar','Week and month'],['pats','users','Patients','Profiles and plans'],['rep','doc','Reports','Word-ready models'],['me','user','Profile','Account and places']].filter(x=>x[2].toLowerCase().includes(q));
+function od(){const m=S.me,q=(V.dq||'').toLowerCase(),it=[['home','home','Dashboard','Overview'],['today','clock','Today’s sessions','Goals and countdown'],['sess','list','Sessions','All appointments'],['cal','cal','Calendar','Week and month'],['pats','users','Patients','Profiles and plans'],['rep','doc','Reports','Word-ready models'],['ai','chat','SpeechCare AI','Focused therapy assistant'],['me','user','Profile','Account and places']].filter(x=>x[2].toLowerCase().includes(q));
 $('#dr').innerHTML=`<div class=bk onclick="cd()"></div><aside><div class=dh><div class=av>${esc((m.name||'?')[0])}</div><h3>${esc(m.name||'Speech therapist')}</h3><small>${esc(m.email)}</small><div style="margin-top:6px"><span class=chip style="background:#ffffff30;color:#fff">${ic('user',14)} Speech therapist</span></div></div>
 <div class=dg><div class=srch>${ic('search',18)}<input placeholder="Search a menu…" value="${esc(V.dq||'')}" oninput="V.dq=this.value;od()" id=dq></div><p>MAIN</p>${it.map(x=>`<button class=mi onclick="nav('${x[0]}',1)"><span class=ti2>${ic(x[1],20)}</span><span>${x[2]}<small>${x[3]}</small></span>${ic('chev',16)}</button>`).join('')}<p>QUICK ACTIONS</p>
 <button class=mi onclick="cd();apForm()"><span class=ti2>${ic('cal',20)}</span><span>New session<small>Add to the calendar</small></span></button><button class=mi onclick="cd();ptForm()"><span class=ti2>${ic('user',20)}</span><span>New patient<small>Create a profile</small></span></button>
@@ -231,6 +244,52 @@ function upd(){$('#tot').textContent=`≈ ${exp({fn:$('#p_fn').value,fu:$('#p_fu
 function recH(){const c=[...document.querySelectorAll('.ck input:checked')].map(x=>+x.value),n=c.length?Math.max(...c.map(i=>REC[i-1])):0;$('#rec').innerHTML=n?`Typical starting point: <b>${n} per week</b>. Your clinical judgement decides. <button type=button class="b s" onclick="$('#p_fn').value=${n};$('#p_fu').value='week';upd()">Use</button>`:''}
 function savePt(id){const v=k=>$('#p_'+k).value.trim(),o={};['name','pre','birth','parents','phone','place','start','fn','dv','symptoms','diag','plan'].forEach(k=>o[k]=v(k));o.fu=$('#p_fu').value;o.du=$('#p_du').value;o.pt=sv('p_pt');o.conds=[...document.querySelectorAll('.ck input:checked')].map(x=>x.value).slice(0,4);if(!o.name)return toast('Enter the patient’s name');
 if(o.place&&!S.me.places.some(x=>x.n==o.place))S.me.places.push({n:o.place,t:o.pt});if(id)Object.assign(P(id),o);else{o.id=uid();S.p.push(o);V.pid=o.id}save();cs();go();toast('Patient saved')}
+/* ---------- SpeechCare AI ---------- */
+function aiContext(){
+  const source=V.aiSource||'ai';
+  const p=V.aiPatient?P(V.aiPatient):null;
+  const base={screen:source,screenLabel:{home:'Dashboard',sess:'Sessions',cal:'Calendar',today:'Today',pats:'Patients',pat:'Patient profile',rep:'Reports',me:'Profile',ai:'SpeechCare AI'}[source]||'SpeechCare AI'};
+  if(source=='pat' && p){
+    const sessions=S.a.filter(a=>a.pid==p.id).sort((x,y)=>(y.date+y.time).localeCompare(x.date+x.time)).slice(0,20).map(a=>({date:a.date,time:a.time,status:a.status,goal:a.goal||'',remark:a.remark||''}));
+    const activities=(p.conds||[]).flatMap(i=>(C.find(c=>c[0]==i)||[]).slice(3).concat(S.act[i]||[])).slice(0,40);
+    return {...base,patient:{name:p.name,pre:p.pre,age:age(p.birth),type:TY[p.pt],place:p.place,conditions:cn(p),symptoms:p.symptoms,diagnostic:p.diag,plan:p.plan,goals:p.plan},activities,sessions};
+  }
+  const sessions=source=='sess'||source=='today'||source=='home'?S.a.filter(a=>source=='today'?a.date==td():source=='home'?a.date==td():true).slice(0,30).map(a=>({date:a.date,time:a.time,status:a.status,patient:P(a.pid)?full(P(a.pid)):'',goal:a.goal||'',remark:a.remark||''})):[];
+  const patients=source=='pats'?S.p.slice(0,50).map(p=>({name:full(p),age:age(p.birth),type:TY[p.pt],place:p.place,conditions:cn(p)})):[];
+  const day=source=='cal'?V.day:null;
+  return {...base,day,filter:source=='sess'?V.f:'',report:source=='rep'?{patient:p?full(p):'',model:MODELS[V.rm]?.[0]||'',period:V.rp}:null,patients,sessions,patient:p?{name:p.name,pre:p.pre,age:age(p.birth),type:TY[p.pt],place:p.place,conditions:cn(p),symptoms:p.symptoms,diagnostic:p.diag,plan:p.plan}:null,activities:Object.entries(S.act||{}).slice(0,20)};
+}
+async function askAI(){
+  const q=$('#aiq').value.trim(); if(!q||V.aiBusy)return;
+  V.aiBusy=true; V.aiMsgs.push({r:'user',t:q}); $('#aiq').value=''; renderAI();
+  try{
+    const context=aiContext();
+    const SYSTEM=`You are SpeechCare AI, a focused assistant inside a speech-language therapy management app.\n\nYour job is to help a speech-language therapist with therapy planning, activity ideas, patient-session organization, progress review, and educational explanations about speech, language, communication, and related conditions. Stay focused on speech-language therapy. Politely decline unrelated requests.\n\nDo not diagnose a patient, prescribe treatment, or claim certainty where clinical judgment is required. When patient information is provided, use only that information and do not invent facts. Prefer practical, age-appropriate, structured suggestions. The therapist remains responsible for clinical decisions.\n\nAnswer clearly and concisely unless the therapist asks for detail.`;
+    const prompt=`${SYSTEM}\n\nThe therapist opened SpeechCare AI from the '${context.screenLabel}' section. Use that section context when relevant.\n\nRELEVANT SPEECHCARE DATA (use only if relevant):\n${JSON.stringify(context)}\n\nTHERAPIST MESSAGE:\n${q}`;
+    const url=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+    const r=await fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0.35,maxOutputTokens:1200}})});
+    const data=await r.json();
+    if(!r.ok) throw new Error(data?.error?.message||`Gemini request failed (${r.status})`);
+    const text=data?.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('')?.trim();
+    if(!text) throw new Error('Gemini returned no text.');
+    V.aiMsgs.push({r:'ai',t:text});
+  }catch(e){
+    console.error('SpeechCare AI error:',e);
+    V.aiMsgs.push({r:'ai',t:'I could not reach SpeechCare AI right now. Please check the Gemini API key, internet connection, and API access for this project.'});
+  }
+  V.aiBusy=false;renderAI();
+}
+function aiQuick(q){$('#aiq').value=q;askAI()}
+function renderAI(){const e=$('#aichat');if(!e)return;e.innerHTML=V.aiMsgs.map(m=>`<div class="aimsg ${m.r=='user'?'user':'ai'}">${esc(m.t)}</div>`).join('')+(V.aiBusy?'<div class="aimsg ai">Thinking…</div>':'');e.scrollTop=e.scrollHeight}
+function ai(){
+  const p=V.aiPatient?P(V.aiPatient):null;
+  const sourceLabel={home:'Dashboard',sess:'Sessions',cal:'Calendar',today:'Today',pats:'Patients',pat:'Patient profile',rep:'Reports',me:'Profile',ai:'SpeechCare AI'}[V.aiSource]||'SpeechCare AI';
+  return `<div class=aihero><h2>✨ SpeechCare AI</h2><p>Focused assistance for speech-language therapy, session planning and patient activities.</p>${V.aiSource&&V.aiSource!='ai'?`<div style="margin-top:8px;font-size:12px;opacity:.9">Opened from: ${esc(sourceLabel)}</div>`:''}</div>
+  <div class=card><label>Patient context (optional)</label><select onchange="V.aiPatient=this.value;go()"><option value="">General SpeechCare question</option>${S.p.map(x=>`<option value="${x.id}"${x.id==V.aiPatient?' selected':''}>${full(x)}</option>`).join('')}</select>${p?`<div class=chips><span class=chip>${esc(age(p.birth))}</span>${cn(p).map(x=>`<span class=chip>${esc(x.split(' (')[0])}</span>`).join('')}</div>`:''}</div>
+  <div class=aiquick><button class=aipill onclick="aiQuick('Suggest activities for this patient.')">💡 Activities</button><button class=aipill onclick="aiQuick('Build a 30-minute therapy session for this patient.')">🎯 Build session</button><button class=aipill onclick="aiQuick('Explain the selected condition in practical therapy terms.')">📚 Explain condition</button></div>
+  <div id=aichat class=aichat>${V.aiMsgs.map(m=>`<div class="aimsg ${m.r=='user'?'user':'ai'}">${esc(m.t)}</div>`).join('')}</div>
+  <div class=aibar><div class=row><textarea id=aiq placeholder="Ask SpeechCare AI…" onkeydown="if(event.key=='Enter'&&!event.shiftKey){event.preventDefault();askAI()}"></textarea><button class="b t" onclick="askAI()">Send</button></div><div class=mut style="margin-top:4px">AI support only — verify clinical decisions with professional judgment.</div></div>`;
+}
 /* ---------- reports ---------- */
 const MODELS={parent:['For parents','للأولياء'],school:['For school','للمدرسة'],doctor:['For another therapist / doctor','لأخصائي / طبيب آخر'],rating:['Rating by condition (IDE-style)','تقييم حسب الحالة'],eval:['Evaluation report by period','تقرير تقييم دوري']};
 function ctx(p){const lim=V.rm=='eval'?addD(p.start||td(),V.rp*30):'9999',A=S.a.filter(a=>a.pid==p.id&&a.date<=lim).sort((x,y)=>x.date.localeCompare(y.date)),dn=A.filter(a=>a.status=='done'),ab=A.filter(a=>a.status=='absent').length;
@@ -249,7 +308,7 @@ return `<label>Patient</label><select onchange="V.pid=this.value;go()">${S.p.map
 <div class=row style="margin:10px 0">${V.rm=='eval'?[1,3,6].map(n=>`<button class="pill${V.rp==n?' on':''}" onclick="V.rp=${n};go()">${n} month${n>1?'s':''}</button>`).join(''):''}<button class="pill${!ar?' on':''}" onclick="V.rl='fr';go()">Titles: EN</button><button class="pill${ar?' on':''}" onclick="V.rl='ar';go()">Titles: عربي</button></div>
 <div class=mut>Sections are pre-filled from the profile and session log. Edit, then copy for Gemini or download as Word.</div>
 ${secs().map(s=>`<div class="card rs"><label>${esc(ar?s[1]:s[0])}</label><textarea data-t="${esc(ar?s[1]:s[0])}" dir=auto style="min-height:90px">${esc(s[2])}</textarea></div>`).join('')}
-<div class=row><button class="b t" onclick="cp()">Copy for Gemini</button><button class=b onclick="dl()">Download Word</button></div><div class=mut id=rmsg style="margin-top:8px"></div>`}
+<div class=row><button class="b t" onclick="V.aiPatient=V.pid;V.aiMsgs=[];nav('ai',1)">Ask SpeechCare AI</button><button class="b g" onclick="cp()">Copy text</button><button class=b onclick="dl()">Download Word</button></div><div class=mut id=rmsg style="margin-top:8px"></div>`}
 const body=()=>[...document.querySelectorAll('.rs textarea')].map(t=>({t:t.dataset.t,v:t.value}));
 function cp(){const tx=`Complete and polish this speech-language therapy report (${MODELS[V.rm][0]}). Keep the structure and titles.\n\n`+body().map(s=>`## ${s.t}\n${s.v}`).join('\n\n'),ok=()=>$('#rmsg').textContent='Copied. Paste it into Gemini.';try{navigator.clipboard.writeText(tx).then(ok,()=>fb(tx))}catch(e){fb(tx)}}
 function fb(tx){const t=document.createElement('textarea');t.value=tx;document.body.appendChild(t);t.select();let r=false;try{r=document.execCommand('copy')}catch(e){}t.remove();$('#rmsg').textContent=r?'Copied. Paste it into Gemini.':'Copy was blocked. Select the text manually.'}
