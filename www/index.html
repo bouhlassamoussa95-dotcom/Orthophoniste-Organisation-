@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Ortho Assistant</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>SpeechCare</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -75,17 +75,15 @@ nav button{flex:1;background:none;border:0;font-size:11px;color:var(--mut);paddi
 <div id="auth" hidden></div>
 <div id="shell" hidden><header id="hd"></header><main id="app"></main><nav><div id="tabs"></div></nav></div>
 <div class="dr" id="dr"></div><div id="toast"></div>
-<script src="gemini-config.js"></script>
+<script src="openrouter-config.js"></script>
 <script>
 const FB={apiKey:"AIzaSyDWMO2ixLHk9S8p0g2Kt1Oo4YBrvlvaSI4",authDomain:"oprthophoniste-organisation.firebaseapp.com",projectId:"oprthophoniste-organisation",storageBucket:"oprthophoniste-organisation.firebasestorage.app",messagingSenderId:"738326689129",appId:"1:738326689129:web:052e7a9de200d7819d79f8"};
-// Gemini API key for the private SpeechCare prototype. Replace/revoke this key before public release.
-const GEMINI_MODEL=window.SPEECHCARE_GEMINI_MODEL||"gemini-flash-latest";
-const GEMINI_MODEL_FALLBACKS=Array.isArray(window.SPEECHCARE_GEMINI_MODEL_FALLBACKS)?window.SPEECHCARE_GEMINI_MODEL_FALLBACKS:[];
-const GEMINI_KEY_STORAGE="speechcare_gemini_api_key_v1";
-function geminiKey(){try{return (localStorage.getItem(GEMINI_KEY_STORAGE)||window.SPEECHCARE_GEMINI_API_KEY||"").trim()}catch(e){return (window.SPEECHCARE_GEMINI_API_KEY||"").trim()}}
-function geminiKeyStatus(){const k=geminiKey();return k.length>=20?`Gemini key saved (${k.length} chars)`:'Gemini key not configured'}
-function saveGeminiKey(v){v=(v||"").trim();if(!v||v.length<20)throw new Error('Enter a valid Gemini API key (at least 20 characters).');if(/\s/.test(v))throw new Error('The Gemini API key contains spaces or line breaks.');localStorage.setItem(GEMINI_KEY_STORAGE,v)}
-function clearGeminiKey(){localStorage.removeItem(GEMINI_KEY_STORAGE)}
+// OpenRouter configuration for the private SpeechCare prototype.
+const OPENROUTER_API_KEY=(window.SPEECHCARE_OPENROUTER_API_KEY||"").trim();
+const OPENROUTER_MODEL=window.SPEECHCARE_OPENROUTER_MODEL||"openrouter/free";
+const OPENROUTER_KEY_STATUS=OPENROUTER_API_KEY.length>=20 ? `OpenRouter key loaded (${OPENROUTER_API_KEY.length} chars)` : 'OpenRouter key NOT loaded';
+const OPENROUTER_REFERER=window.SPEECHCARE_OPENROUTER_REFERER||"https://speechcare.local";
+const OPENROUTER_TITLE=window.SPEECHCARE_OPENROUTER_TITLE||"SpeechCare AI";
 const I={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c2 .7 3.5 2.5 3.5 5.5"/>',doc:'<path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/>',menu:'<path d="M4 7h16M4 12h16M4 17h10"/>',bell:'<path d="M6 17v-6a6 6 0 0 1 12 0v6l2 2H4z"/><path d="M10 21a2 2 0 0 0 4 0"/>',plus:'<path d="M12 5v14M5 12h14"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/>',phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',pin:'<path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>',back:'<path d="M15 5l-7 7 7 7"/>',out:'<path d="M10 4H5v16h5M15 8l4 4-4 4M19 12H9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 7l9 6 9-6"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',chev:'<path d="M9 5l7 7-7 7"/>',list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',agent:'<rect x="6" y="6" width="12" height="12" rx="4"/><path d="M9 11h.01M15 11h.01M9.5 15h5M9 6V4M15 6V4M6 12H4M20 12h-2"/>',x2:'<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>'};
 const ic=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
 const C=[
@@ -255,53 +253,64 @@ if(o.place&&!S.me.places.some(x=>x.n==o.place))S.me.places.push({n:o.place,t:o.p
 function aiContext(){
   const source=V.aiSource||'ai';
   const p=V.aiPatient?P(V.aiPatient):null;
-  const base={screen:source,screenLabel:{home:'Dashboard',sess:'Sessions',cal:'Calendar',today:'Today',pats:'Patients',pat:'Patient profile',rep:'Reports',me:'Profile',ai:'SpeechCare AI'}[source]||'SpeechCare AI'};
+  const label={home:'Dashboard',sess:'Sessions',cal:'Calendar',today:'Today',pats:'Patients',pat:'Patient profile',rep:'Reports',me:'Profile',ai:'SpeechCare AI'}[source]||'SpeechCare AI';
+  const base={screen:source,screenLabel:label};
+  // Privacy shield: direct patient identifiers never leave the device.
   if(source=='pat' && p){
-    const sessions=S.a.filter(a=>a.pid==p.id).sort((x,y)=>(y.date+y.time).localeCompare(x.date+x.time)).slice(0,20).map(a=>({date:a.date,time:a.time,status:a.status,goal:a.goal||'',remark:a.remark||''}));
+    const sessions=S.a.filter(a=>a.pid==p.id).sort((x,y)=>(y.date+y.time).localeCompare(x.date+x.time)).slice(0,20).map((a,i)=>({session:`Session ${i+1}`,status:a.status,goal:a.goal||'',remark:a.remark||''}));
     const activities=(p.conds||[]).flatMap(i=>(C.find(c=>c[0]==i)||[]).slice(3).concat(S.act[i]||[])).slice(0,40);
-    return {...base,patient:{name:p.name,pre:p.pre,age:age(p.birth),type:TY[p.pt],place:p.place,conditions:cn(p),symptoms:p.symptoms,diagnostic:p.diag,plan:p.plan,goals:p.plan},activities,sessions};
+    return {...base,patient:{id:'PATIENT_A',age:age(p.birth),type:TY[p.pt],conditions:cn(p),symptoms:p.symptoms||'',diagnostic:p.diag||'',plan:p.plan||'',goals:p.plan||''},activities,sessions};
   }
-  const sessions=source=='sess'||source=='today'||source=='home'?S.a.filter(a=>source=='today'?a.date==td():source=='home'?a.date==td():true).slice(0,30).map(a=>({date:a.date,time:a.time,status:a.status,patient:P(a.pid)?full(P(a.pid)):'',goal:a.goal||'',remark:a.remark||''})):[];
-  const patients=source=='pats'?S.p.slice(0,50).map(p=>({name:full(p),age:age(p.birth),type:TY[p.pt],place:p.place,conditions:cn(p)})):[];
+  const sessions=source=='sess'||source=='today'||source=='home'?S.a.filter(a=>source=='today'?a.date==td():source=='home'?a.date==td():true).slice(0,30).map((a,i)=>({session:`Session ${i+1}`,status:a.status,goal:a.goal||'',remark:a.remark||'',hasPatientContext:!!P(a.pid)})):[];
+  const patients=source=='pats'?S.p.slice(0,50).map((p,i)=>({patient:`PATIENT_${String.fromCharCode(65+i%26)}`,age:age(p.birth),type:TY[p.pt],conditions:cn(p)})):[];
   const day=source=='cal'?V.day:null;
-  return {...base,day,filter:source=='sess'?V.f:'',report:source=='rep'?{patient:p?full(p):'',model:MODELS[V.rm]?.[0]||'',period:V.rp}:null,patients,sessions,patient:p?{name:p.name,pre:p.pre,age:age(p.birth),type:TY[p.pt],place:p.place,conditions:cn(p),symptoms:p.symptoms,diagnostic:p.diag,plan:p.plan}:null,activities:Object.entries(S.act||{}).slice(0,20)};
+  return {...base,day,filter:source=='sess'?V.f:'',report:source=='rep'?{model:MODELS[V.rm]?.[0]||'',period:V.rp}:null,patients,sessions,activities:Object.entries(S.act||{}).slice(0,20)};
 }
+function aiSystem(){return `You are SpeechCare AI, a focused assistant inside a speech-language therapy management app.
+
+Your job is to help a speech-language therapist with therapy planning, activity ideas, patient-session organization, progress review, report drafting, and educational explanations about speech, language, communication, and related conditions. Stay focused on speech-language therapy and politely decline unrelated requests.
+
+PRIVACY RULES:
+- Patient identity has been intentionally removed before this request.
+- Never ask for, infer, reconstruct, or invent a patient's real name, parents' names, phone, email, address, center/daycare name, internal patient ID, or exact appointment date.
+- Refer to the supplied patient as Patient A, Patient B, etc.
+- Do not claim that you know an identity that is not present in the context.
+- Clinical details supplied in the context may be used for therapy assistance, but do not invent missing clinical facts.
+
+CLINICAL SAFETY:
+- Do not diagnose or prescribe.
+- Do not present suggestions as a substitute for professional clinical judgment.
+- Flag uncertainty when appropriate.
+- Prefer practical, age-appropriate, structured suggestions.
+- For reports, write professional therapist-ready language and preserve the supplied facts.
+
+The therapist remains responsible for clinical decisions.`}
 async function askAI(){
   const q=$('#aiq').value.trim(); if(!q||V.aiBusy)return;
   V.aiBusy=true; V.aiMsgs.push({r:'user',t:q}); $('#aiq').value=''; renderAI();
   try{
+    if(!OPENROUTER_API_KEY || OPENROUTER_API_KEY.length < 20) throw new Error(`OpenRouter API key was not loaded into this APK. ${OPENROUTER_KEY_STATUS}. Put your NEW key in www/openrouter-config.js and rebuild.`);
     const context=aiContext();
-    const SYSTEM=`You are SpeechCare AI, a focused assistant inside a speech-language therapy management app.\n\nYour job is to help a speech-language therapist with therapy planning, activity ideas, patient-session organization, progress review, and educational explanations about speech, language, communication, and related conditions. Stay focused on speech-language therapy. Politely decline unrelated requests.\n\nDo not diagnose a patient, prescribe treatment, or claim certainty where clinical judgment is required. When patient information is provided, use only that information and do not invent facts. Prefer practical, age-appropriate, structured suggestions. The therapist remains responsible for clinical decisions.\n\nAnswer clearly and concisely unless the therapist asks for detail.`;
-    const prompt=`${SYSTEM}\n\nThe therapist opened SpeechCare AI from the '${context.screenLabel}' section. Use that section context when relevant.\n\nRELEVANT SPEECHCARE DATA (use only if relevant):\n${JSON.stringify(context)}\n\nTHERAPIST MESSAGE:\n${q}`;
-    const key=geminiKey();
-    if(!key || key.length < 20) throw new Error(`Gemini API key is not configured in SpeechCare. Open Profile → Gemini AI settings, enter your key, save it, then tap Test connection.`);
+    const prompt=`${aiSystem()}
 
-    // Simple, official Gemini REST generateContent path.
-    // The key is supplied in the X-goog-api-key header, never in the URL.
-    const models=[...new Set([GEMINI_MODEL,...GEMINI_MODEL_FALLBACKS,'gemini-flash-latest','gemini-2.5-flash-lite','gemini-2.5-flash','gemini-2.0-flash-lite','gemini-2.0-flash'])].filter(Boolean);
-    const errors=[];
-    for(const model of models){
-      try{
-        const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json','X-goog-api-key':key},
-          body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
-        });
-        let d={}; try{d=await r.json()}catch(e){}
-        if(!r.ok){
-          const msg=d?.error?.message||d?.message||`HTTP ${r.status}`;
-          errors.push(`${model}: HTTP ${r.status} — ${msg}`); continue;
-        }
-        const text=(d?.candidates?.[0]?.content?.parts||[]).map(x=>x?.text||'').join('').trim();
-        if(text){V.aiMsgs.push({r:'ai',t:text});V.aiBusy=false;renderAI();return;}
-        errors.push(`${model}: response contained no text`);
-      }catch(e){errors.push(`${model}: ${e?.message||e}`)}
-    }
-    throw new Error(`No configured Gemini model could answer.\n\n${errors.slice(0,8).join('\n')}`);
-  }catch(e){
-    console.error('SpeechCare AI error:',e);
-    V.aiMsgs.push({r:'ai',t:`SpeechCare AI connection error:\n\n${e?.message||e}`});
-  }
+The therapist opened SpeechCare AI from the '${context.screenLabel}' section. Use that section context when relevant.
+
+ANONYMIZED SPEECHCARE DATA:
+${JSON.stringify(context)}
+
+THERAPIST MESSAGE:
+${q}`;
+    const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{Authorization:`Bearer ${OPENROUTER_API_KEY}`,'HTTP-Referer':OPENROUTER_REFERER,'X-Title':OPENROUTER_TITLE,'Content-Type':'application/json'},body:JSON.stringify({model:OPENROUTER_MODEL,messages:[{role:'user',content:prompt}],temperature:0.35,max_tokens:1600})});
+    let d={};try{d=await r.json()}catch(e){}
+    if(!r.ok) throw new Error(d?.error?.message||`OpenRouter HTTP ${r.status}`);
+    const text=d?.choices?.[0]?.message?.content?.trim();
+    if(!text) throw new Error('OpenRouter returned no text.');
+    V.aiMsgs.push({r:'ai',t:text});
+  }catch(e){console.error('SpeechCare AI error:',e);V.aiMsgs.push({r:'ai',t:`SpeechCare AI connection error:
+
+${e?.message||e}
+
+Check the OpenRouter key, selected model, internet connection, and OpenRouter account access.`});}
   V.aiBusy=false;renderAI();
 }
 function aiQuick(q){$('#aiq').value=q;askAI()}
@@ -310,10 +319,10 @@ function ai(){
   const p=V.aiPatient?P(V.aiPatient):null;
   const sourceLabel={home:'Dashboard',sess:'Sessions',cal:'Calendar',today:'Today',pats:'Patients',pat:'Patient profile',rep:'Reports',me:'Profile',ai:'SpeechCare AI'}[V.aiSource]||'SpeechCare AI';
   return `<div class=aihero><div class="row" style="align-items:center"><div class="aiagent">${ic('chat',24)}</div><div><h2 style="margin:0">SpeechCare AI</h2><div class="ailive"><i></i> Live assistant</div></div></div><p style="margin-top:12px">Focused assistance for speech-language therapy, session planning and patient activities.</p>${V.aiSource&&V.aiSource!='ai'?`<div style="margin-top:8px;font-size:12px;opacity:.9">Opened from: ${esc(sourceLabel)}</div>`:''}</div>
-  <div class=card><label>Patient context (optional)</label><select onchange="V.aiPatient=this.value;go()"><option value="">General SpeechCare question</option>${S.p.map(x=>`<option value="${x.id}"${x.id==V.aiPatient?' selected':''}>${full(x)}</option>`).join('')}</select>${p?`<div class=chips><span class=chip>${esc(age(p.birth))}</span>${cn(p).map(x=>`<span class=chip>${esc(x.split(' (')[0])}</span>`).join('')}</div>`:''}</div>
-  <div class=aiquick><button class=aipill onclick="aiQuick('Suggest activities for this patient.')">💡 Activities</button><button class=aipill onclick="aiQuick('Build a 30-minute therapy session for this patient.')">🎯 Build session</button><button class=aipill onclick="aiQuick('Explain the selected condition in practical therapy terms.')">📚 Explain condition</button></div>
+  <div class=card><label>Patient context (optional)</label><select onchange="V.aiPatient=this.value;go()"><option value="">General SpeechCare question</option>${S.p.map(x=>`<option value="${x.id}"${x.id==V.aiPatient?' selected':''}>${full(x)}</option>`).join('')}</select>${p?`<div class=chips><span class=chip>${esc(age(p.birth))}</span>${cn(p).map(x=>`<span class=chip>${esc(x.split(' (')[0])}</span>`).join('')}</div><div class="mut" style="margin-top:6px">Privacy shield: patient identity is removed before AI requests.</div>`:''}</div>
+  <div class=aiquick><button class=aipill onclick="aiQuick('Suggest activities for this patient.')">💡 Activities</button><button class=aipill onclick="aiQuick('Build a 30-minute therapy session for this patient.')">🎯 Build session</button><button class=aipill onclick="aiQuick('Explain the selected condition in practical therapy terms.')">📚 Explain condition</button><button class=aipill onclick="aiQuick('Draft a professional progress report from the available anonymized data.')">📄 Draft report</button></div>
   <div id=aichat class=aichat>${V.aiMsgs.map(m=>`<div class="aimsg ${m.r=='user'?'user':'ai'}">${esc(m.t)}</div>`).join('')}</div>
-  <div class=aibar><div class=row><textarea id=aiq placeholder="Ask SpeechCare AI…" onkeydown="if(event.key=='Enter'&&!event.shiftKey){event.preventDefault();askAI()}"></textarea><button class="b t" onclick="askAI()">Send</button></div><div class=mut style="margin-top:4px">AI support only — verify clinical decisions with professional judgment.</div></div>`;
+  <div class=aibar><div class=row><textarea id=aiq placeholder="Ask SpeechCare AI…" onkeydown="if(event.key=='Enter'&&!event.shiftKey){event.preventDefault();askAI()}"></textarea><button class="b t" onclick="askAI()">Send</button></div><div class=mut style="margin-top:4px">AI support only — verify clinical decisions with professional judgment. Patient identity is shielded from the AI provider.</div></div>`;
 }
 /* ---------- reports ---------- */
 const MODELS={parent:['For parents','للأولياء'],school:['For school','للمدرسة'],doctor:['For another therapist / doctor','لأخصائي / طبيب آخر'],rating:['Rating by condition (IDE-style)','تقييم حسب الحالة'],eval:['Evaluation report by period','تقرير تقييم دوري']};
@@ -331,46 +340,16 @@ function rep(){if(!S.p.length)return '<div class="card mut">Add a patient first.
 return `<label>Patient</label><select onchange="V.pid=this.value;go()">${S.p.map(p=>`<option value="${p.id}"${p.id==V.pid?' selected':''}>${full(p)}</option>`).join('')}</select>
 <div class=fltr>${Object.keys(MODELS).map(k=>`<button class="pill${V.rm==k?' on':''}" onclick="V.rm='${k}';go()">${MODELS[k][0]}</button>`).join('')}</div>
 <div class=row style="margin:10px 0">${V.rm=='eval'?[1,3,6].map(n=>`<button class="pill${V.rp==n?' on':''}" onclick="V.rp=${n};go()">${n} month${n>1?'s':''}</button>`).join(''):''}<button class="pill${!ar?' on':''}" onclick="V.rl='fr';go()">Titles: EN</button><button class="pill${ar?' on':''}" onclick="V.rl='ar';go()">Titles: عربي</button></div>
-<div class=mut>Sections are pre-filled from the profile and session log. Edit, then copy for Gemini or download as Word.</div>
+<div class=mut>Sections are pre-filled from the profile and session log. AI assistance uses anonymized patient context; real identity stays on this device for the final document.</div>
 ${secs().map(s=>`<div class="card rs"><label>${esc(ar?s[1]:s[0])}</label><textarea data-t="${esc(ar?s[1]:s[0])}" dir=auto style="min-height:90px">${esc(s[2])}</textarea></div>`).join('')}
 <div class=row><button class="b t" onclick="V.aiPatient=V.pid;V.aiMsgs=[];nav('ai',1)">Ask SpeechCare AI</button><button class="b g" onclick="cp()">Copy text</button><button class=b onclick="dl()">Download Word</button></div><div class=mut id=rmsg style="margin-top:8px"></div>`}
 const body=()=>[...document.querySelectorAll('.rs textarea')].map(t=>({t:t.dataset.t,v:t.value}));
-function cp(){const tx=`Complete and polish this speech-language therapy report (${MODELS[V.rm][0]}). Keep the structure and titles.\n\n`+body().map(s=>`## ${s.t}\n${s.v}`).join('\n\n'),ok=()=>$('#rmsg').textContent='Copied. Paste it into Gemini.';try{navigator.clipboard.writeText(tx).then(ok,()=>fb(tx))}catch(e){fb(tx)}}
-function fb(tx){const t=document.createElement('textarea');t.value=tx;document.body.appendChild(t);t.select();let r=false;try{r=document.execCommand('copy')}catch(e){}t.remove();$('#rmsg').textContent=r?'Copied. Paste it into Gemini.':'Copy was blocked. Select the text manually.'}
+function cp(){const tx=`Complete and polish this speech-language therapy report (${MODELS[V.rm][0]}). Keep the structure and titles.\n\n`+body().map(s=>`## ${s.t}\n${s.v}`).join('\n\n'),ok=()=>$('#rmsg').textContent='Copied.';try{navigator.clipboard.writeText(tx).then(ok,()=>fb(tx))}catch(e){fb(tx)}}
+function fb(tx){const t=document.createElement('textarea');t.value=tx;document.body.appendChild(t);t.select();let r=false;try{r=document.execCommand('copy')}catch(e){}t.remove();$('#rmsg').textContent=r?'Copied.':'Copy was blocked. Select the text manually.'}
 function dl(){const p=P(V.pid),rtl=V.rl=='ar',m=S.me,h=`<html dir="${rtl?'rtl':'ltr'}"><head><meta charset="utf-8"><style>body{font-family:Calibri,Arial;color:#17262b}h1{background:#0f7a72;color:#fff;padding:10px 14px;font-size:20pt}h2{color:#5b3f8c;border-bottom:2px solid #0f7a72;font-size:13pt}p{white-space:pre-wrap}</style></head><body><h1>${esc(MODELS[V.rm][rtl?1:0])}</h1><p><b>${esc(rn(p))}</b> – ${age(p.birth)}</p>${body().map(s=>`<h2>${esc(s.t)}</h2><p>${esc(s.v)}</p>`).join('')}<p><br>${esc(m.name)}<br>${esc(m.title)}<br>${esc(m.phone)} · ${esc(m.email)}</p></body></html>`;
 try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff',h],{type:'application/msword'}));a.download=`report_${p.name}_${V.rm}.doc`;a.click();$('#rmsg').textContent='If nothing downloaded, use Copy instead.'}catch(e){$('#rmsg').textContent='Download blocked. Use Copy instead.'}}
 /* ---------- profile ---------- */
-async function testGeminiConnection(){
-  const status=$('#geminiStatus');
-  const key=geminiKey();
-  if(!key){status.className='am err';status.textContent='No Gemini API key saved yet.';return}
-  status.className='am';status.textContent='Testing Gemini connection…';
-  const models=[...new Set([GEMINI_MODEL,'gemini-flash-latest','gemini-2.5-flash-lite','gemini-2.5-flash','gemini-2.0-flash-lite','gemini-2.0-flash'])];
-  const errors=[];
-  for(const model of models){
-    try{
-      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','X-goog-api-key':key},
-        body:JSON.stringify({contents:[{parts:[{text:'Reply with exactly: SpeechCare connection OK'}]}]})
-      });
-      let d={};try{d=await r.json()}catch(e){}
-      if(!r.ok){errors.push(`${model}: HTTP ${r.status} — ${d?.error?.message||d?.message||'request rejected'}`);continue}
-      const txt=(d?.candidates?.[0]?.content?.parts||[]).map(x=>x?.text||'').join('').trim();
-      if(txt){status.className='am ok';status.textContent=`✓ Gemini connected — ${model}`;return}
-      errors.push(`${model}: response contained no text`);
-    }catch(e){errors.push(`${model}: ${e?.message||e}`)}
-  }
-  status.className='am err';status.textContent=`Gemini connection failed. ${errors[0]||'No model responded.'}`;
-}
-function saveGeminiKeyFromProfile(){
-  const input=$('#geminiKeyInput');
-  try{saveGeminiKey(input.value);input.value='';go();toast('Gemini API key saved on this device');}
-  catch(e){$('#geminiStatus').className='am err';$('#geminiStatus').textContent=e.message}
-}
-function removeGeminiKey(){clearGeminiKey();go();toast('Gemini API key removed from this device')}
 function me(){const m=S.me;return `<div class=card><div class=row><div class=av style="width:56px;height:56px">${esc((m.name||'?')[0])}</div><div><h3>${esc(m.name)}</h3><span class=mut>${esc(m.email)}</span></div></div></div><div class=card>${[['name','Name'],['title','Title'],['phone','Phone'],['addr','Location']].map(x=>`<label>${x[1]}</label><input id=m_${x[0]} value="${esc(m[x[0]])}">`).join('')}<button class=b onclick="saveMe()">Save profile</button></div>
-<h2>Gemini AI</h2><div class=card><div class=row><div class="aiagent" style="width:40px;height:40px">${ic('agent',20)}</div><div style="flex:1"><b>SpeechCare AI connection</b><div class=mut>Enter your Gemini API key here. It is stored only in this app's local storage for this private prototype and is not saved to Firestore.</div></div></div><label>Gemini API key</label><input id=geminiKeyInput type=password autocomplete=off placeholder="Paste your Gemini API key here"><div class=row><button class="b t" onclick="saveGeminiKeyFromProfile()">Save key</button><button class="b g" onclick="testGeminiConnection()">Test connection</button><button class="b g" onclick="removeGeminiKey()">Remove</button></div><div id=geminiStatus class="am ${geminiKey()?'ok':''}">${geminiKeyStatus()}</div><div class=mut style="margin-top:6px">You do not need a GitHub Secret or a new APK after changing the key.</div></div>
 <h2>My centers and daycares</h2><div class=card>${m.places.map((x,i)=>`<div class="row sp" style="padding:4px 0"><span>${esc(x.n)} <span class=chip>${TY[x.t]}</span></span><button class="ib" aria-label="Remove" onclick="S.me.places.splice(${i},1);save();go()">${ic('x',18)}</button></div>`).join('')||'<span class=mut>None yet. They are also added when you save a patient.</span>'}
 <hr style="border:0;border-top:1px solid var(--line)"><input id=np placeholder="Name of a center or daycare">${segH('np_t',[['center','Center'],['daycare','Daycare']],'center')}<button class="b s" onclick="const n=$('#np').value.trim();if(n){S.me.places.push({n,t:sv('np_t')});save();go()}">Add place</button></div>
 <button class="b r" style="background:var(--red)" onclick="logout()">Log out</button>`}
