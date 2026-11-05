@@ -1,0 +1,6 @@
+{
+  "appId": "com.chourouk.orthoassistant",
+  "appName": "Ortho Assistant",
+  "webDir": "www",
+  "android": { "allowMixedContent": false }
+}

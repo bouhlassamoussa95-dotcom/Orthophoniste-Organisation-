@@ -1,0 +1,21 @@
+{
+  "name": "ortho-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Speech-language therapist assistant (Capacitor + Firebase)",
+  "scripts": {
+    "prepare": "node scripts/copy-vendor.js",
+    "android:sync": "npm run prepare && npx cap sync android",
+    "android:open": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/app": "^6.0.1",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/local-notifications": "^6.1.0",
+    "firebase": "^10.12.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}
