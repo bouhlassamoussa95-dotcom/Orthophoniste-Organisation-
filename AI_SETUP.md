@@ -1,15 +1,25 @@
-# SpeechCare AI — private prototype
+# SpeechCare AI — Gemini Interactions API setup
 
-## Fastest setup
-1. Open `www/gemini-config.js`.
-2. Replace `PASTE_YOUR_NEW_GEMINI_API_KEY_HERE` with your NEW Gemini API key.
-3. Keep the repository private.
-4. Push the project to GitHub and run **Actions → Build Android APK**.
+This build uses Google Gemini's newer **Interactions API** from the browser/Android app for a private prototype.
 
-The workflow will use `GEMINI_API_KEY` from GitHub Secrets if that secret exists. If it does not exist, it uses the key in `www/gemini-config.js`. This avoids the previous failure where the APK was built with an empty key.
+## 1. Put the key in one place
+Open `www/gemini-config.js` and replace only the placeholder:
 
-## AI UI
-SpeechCare AI is opened from a static AI-agent button in the top-right header on the main screens. It is not a floating/rotating button. The AI receives the current screen context and, when applicable, the selected patient context.
+```js
+window.SPEECHCARE_GEMINI_API_KEY="YOUR_REAL_GEMINI_API_KEY";
+window.SPEECHCARE_GEMINI_MODEL="gemini-3.8-flash";
+```
+
+Do not paste the key into chat. Keep this repository private.
+
+## 2. Build
+Push the project root to a private GitHub repository and run **Actions → Build Android APK**. The workflow validates the key before building and also verifies that the key reached the Android web assets.
+
+## 3. API behavior
+The app sends a POST request to the Gemini Interactions API and uses the configured model. If Google rejects the request, SpeechCare displays the exact API error returned by Google.
+
+## Billing
+This setup does **not** require Firebase Blaze or Firebase Functions. Gemini API access can have a free tier, but Google controls model-specific quotas and availability; free-tier limits can change. If Google requires billing for the selected model/project, that is a Gemini API account/project requirement, not a Firebase requirement.
 
 ## Security
-This direct Gemini API prototype is intended for private testing. The key is delivered to the client APK and can be extracted by a sufficiently skilled person. Before public/commercial release or use with sensitive patient data, move Gemini calls to a secure backend and review privacy/compliance requirements.
+This is suitable only for a private prototype. An API key embedded in an APK can be extracted. Before public/commercial distribution or use with real patient health information, move the Gemini request behind a secure backend and apply appropriate privacy/security controls.

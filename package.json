@@ -1,10 +1,13 @@
 {
-  "name": "speechcare",
+  "name": "ortho-assistant",
   "version": "1.0.0",
   "private": true,
-  "description": "SpeechCare - assistant for speech-language therapists (Capacitor + Firebase + Gemini)",
+  "description": "Speech-language therapist assistant (Capacitor + Firebase)",
   "scripts": {
-    "prepare": "node scripts/copy-vendor.js"
+    "prepare": "node scripts/copy-vendor.js",
+    "android:sync": "npm run prepare && npx cap sync android",
+    "android:open": "npx cap open android",
+    "functions:install": "cd functions && npm install"
   },
   "dependencies": {
     "@capacitor/android": "^6.1.2",
@@ -14,7 +17,6 @@
     "firebase": "^10.12.2"
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^6.1.2"
   }
 }
