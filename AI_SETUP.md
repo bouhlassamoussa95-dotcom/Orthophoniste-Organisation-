@@ -1,12 +1,15 @@
 # SpeechCare AI — private prototype
 
-## GitHub setup
-1. In GitHub open **Settings → Secrets and variables → Actions**.
-2. Create a repository secret named **GEMINI_API_KEY**.
-3. Paste your NEW Gemini API key into the secret value. Do not put it in the repository files.
-4. Run the existing **Build Android APK** workflow.
+## Fastest setup
+1. Open `www/gemini-config.js`.
+2. Replace `PASTE_YOUR_NEW_GEMINI_API_KEY_HERE` with your NEW Gemini API key.
+3. Keep the repository private.
+4. Push the project to GitHub and run **Actions → Build Android APK**.
 
-The workflow creates `www/gemini-config.js` only during the build. That file is ignored by Git.
+The workflow will use `GEMINI_API_KEY` from GitHub Secrets if that secret exists. If it does not exist, it uses the key in `www/gemini-config.js`. This avoids the previous failure where the APK was built with an empty key.
 
-## AI agent UI
-SpeechCare AI is available from a floating animated AI button on every main screen. It opens with the current screen and relevant patient context.
+## AI UI
+SpeechCare AI is opened from a static AI-agent button in the top-right header on the main screens. It is not a floating/rotating button. The AI receives the current screen context and, when applicable, the selected patient context.
+
+## Security
+This direct Gemini API prototype is intended for private testing. The key is delivered to the client APK and can be extracted by a sufficiently skilled person. Before public/commercial release or use with sensitive patient data, move Gemini calls to a secure backend and review privacy/compliance requirements.

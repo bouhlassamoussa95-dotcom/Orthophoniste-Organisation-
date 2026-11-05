@@ -20,4 +20,4 @@ Web app (`www/index.html`) wrapped with Capacitor, Firebase Auth + Firestore for
 - `capacitor.config.json`, `package.json`, `firestore.rules`
 
 ## SpeechCare AI
-The app includes a focused Gemini-powered assistant. See `AI_SETUP.md` for the secure Firebase Functions setup. The Gemini secret must never be committed to GitHub or placed in the APK.
+The app includes a focused Gemini-powered assistant. See `AI_SETUP.md` for the private prototype setup. The fastest prototype stores the Gemini key in `www/gemini-config.js`; keep the GitHub repository private. For production, move Gemini calls to a secure backend.
