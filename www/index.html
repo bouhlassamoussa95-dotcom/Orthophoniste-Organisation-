@@ -79,10 +79,13 @@ nav button{flex:1;background:none;border:0;font-size:11px;color:var(--mut);paddi
 <script>
 const FB={apiKey:"AIzaSyDWMO2ixLHk9S8p0g2Kt1Oo4YBrvlvaSI4",authDomain:"oprthophoniste-organisation.firebaseapp.com",projectId:"oprthophoniste-organisation",storageBucket:"oprthophoniste-organisation.firebasestorage.app",messagingSenderId:"738326689129",appId:"1:738326689129:web:052e7a9de200d7819d79f8"};
 // Gemini API key for the private SpeechCare prototype. Replace/revoke this key before public release.
-const GEMINI_API_KEY=(window.SPEECHCARE_GEMINI_API_KEY||"").trim();
 const GEMINI_MODEL=window.SPEECHCARE_GEMINI_MODEL||"gemini-flash-latest";
 const GEMINI_MODEL_FALLBACKS=Array.isArray(window.SPEECHCARE_GEMINI_MODEL_FALLBACKS)?window.SPEECHCARE_GEMINI_MODEL_FALLBACKS:[];
-const GEMINI_KEY_STATUS=GEMINI_API_KEY.length>=20 ? `Gemini key loaded (${GEMINI_API_KEY.length} chars)` : 'Gemini key NOT loaded';
+const GEMINI_KEY_STORAGE="speechcare_gemini_api_key_v1";
+function geminiKey(){try{return (localStorage.getItem(GEMINI_KEY_STORAGE)||window.SPEECHCARE_GEMINI_API_KEY||"").trim()}catch(e){return (window.SPEECHCARE_GEMINI_API_KEY||"").trim()}}
+function geminiKeyStatus(){const k=geminiKey();return k.length>=20?`Gemini key saved (${k.length} chars)`:'Gemini key not configured'}
+function saveGeminiKey(v){v=(v||"").trim();if(!v||v.length<20)throw new Error('Enter a valid Gemini API key (at least 20 characters).');if(/\s/.test(v))throw new Error('The Gemini API key contains spaces or line breaks.');localStorage.setItem(GEMINI_KEY_STORAGE,v)}
+function clearGeminiKey(){localStorage.removeItem(GEMINI_KEY_STORAGE)}
 const I={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c2 .7 3.5 2.5 3.5 5.5"/>',doc:'<path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/>',menu:'<path d="M4 7h16M4 12h16M4 17h10"/>',bell:'<path d="M6 17v-6a6 6 0 0 1 12 0v6l2 2H4z"/><path d="M10 21a2 2 0 0 0 4 0"/>',plus:'<path d="M12 5v14M5 12h14"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/>',phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',pin:'<path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>',back:'<path d="M15 5l-7 7 7 7"/>',out:'<path d="M10 4H5v16h5M15 8l4 4-4 4M19 12H9"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 7l9 6 9-6"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',chev:'<path d="M9 5l7 7-7 7"/>',list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',agent:'<rect x="6" y="6" width="12" height="12" rx="4"/><path d="M9 11h.01M15 11h.01M9.5 15h5M9 6V4M15 6V4M6 12H4M20 12h-2"/>',x2:'<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>'};
 const ic=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
 const C=[
@@ -270,7 +273,8 @@ async function askAI(){
     const context=aiContext();
     const SYSTEM=`You are SpeechCare AI, a focused assistant inside a speech-language therapy management app.\n\nYour job is to help a speech-language therapist with therapy planning, activity ideas, patient-session organization, progress review, and educational explanations about speech, language, communication, and related conditions. Stay focused on speech-language therapy. Politely decline unrelated requests.\n\nDo not diagnose a patient, prescribe treatment, or claim certainty where clinical judgment is required. When patient information is provided, use only that information and do not invent facts. Prefer practical, age-appropriate, structured suggestions. The therapist remains responsible for clinical decisions.\n\nAnswer clearly and concisely unless the therapist asks for detail.`;
     const prompt=`${SYSTEM}\n\nThe therapist opened SpeechCare AI from the '${context.screenLabel}' section. Use that section context when relevant.\n\nRELEVANT SPEECHCARE DATA (use only if relevant):\n${JSON.stringify(context)}\n\nTHERAPIST MESSAGE:\n${q}`;
-    if(!GEMINI_API_KEY || GEMINI_API_KEY.length < 20) throw new Error(`Gemini API key was not loaded into this APK. ${GEMINI_KEY_STATUS}. Rebuild the APK after saving www/gemini-config.js.`);
+    const GEMINI_API_KEY=geminiKey();
+    if(!GEMINI_API_KEY || GEMINI_API_KEY.length < 20) throw new Error(`Gemini API key is not configured in SpeechCare. Open Profile → Gemini AI settings, enter your key, save it, then tap Test connection.`);
 
     const configured=[GEMINI_MODEL,...GEMINI_MODEL_FALLBACKS].filter(Boolean);
     const models=[...new Set(configured.concat(['gemini-3.6-flash','gemini-flash-latest','gemini-2.5-flash-lite','gemini-2.5-flash','gemini-2.0-flash-lite','gemini-2.0-flash']))];
@@ -352,7 +356,33 @@ function fb(tx){const t=document.createElement('textarea');t.value=tx;document.b
 function dl(){const p=P(V.pid),rtl=V.rl=='ar',m=S.me,h=`<html dir="${rtl?'rtl':'ltr'}"><head><meta charset="utf-8"><style>body{font-family:Calibri,Arial;color:#17262b}h1{background:#0f7a72;color:#fff;padding:10px 14px;font-size:20pt}h2{color:#5b3f8c;border-bottom:2px solid #0f7a72;font-size:13pt}p{white-space:pre-wrap}</style></head><body><h1>${esc(MODELS[V.rm][rtl?1:0])}</h1><p><b>${esc(rn(p))}</b> – ${age(p.birth)}</p>${body().map(s=>`<h2>${esc(s.t)}</h2><p>${esc(s.v)}</p>`).join('')}<p><br>${esc(m.name)}<br>${esc(m.title)}<br>${esc(m.phone)} · ${esc(m.email)}</p></body></html>`;
 try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff',h],{type:'application/msword'}));a.download=`report_${p.name}_${V.rm}.doc`;a.click();$('#rmsg').textContent='If nothing downloaded, use Copy instead.'}catch(e){$('#rmsg').textContent='Download blocked. Use Copy instead.'}}
 /* ---------- profile ---------- */
+async function testGeminiConnection(){
+  const status=$('#geminiStatus');
+  const key=geminiKey();
+  if(!key){status.className='am err';status.textContent='No Gemini API key saved yet.';return}
+  status.className='am';status.textContent='Testing Gemini connection…';
+  const models=[...new Set([GEMINI_MODEL,...GEMINI_MODEL_FALLBACKS,'gemini-flash-latest','gemini-3.6-flash','gemini-2.5-flash-lite','gemini-2.5-flash'])];
+  const errors=[];
+  for(const model of models){
+    try{
+      const r=await fetch('https://generativelanguage.googleapis.com/v1beta/interactions',{method:'POST',headers:{'content-type':'application/json','x-goog-api-key':key},body:JSON.stringify({model,input:'Reply with exactly: SpeechCare connection OK'})});
+      let d={};try{d=await r.json()}catch(e){}
+      if(!r.ok){errors.push(`${model}: HTTP ${r.status} — ${d?.error?.message||d?.message||'request rejected'}`);continue}
+      const txt=(d?.output_text||d?.steps?.filter?.(x=>x?.type==='model_output')?.flatMap?.(x=>x?.content||[])?.map?.(x=>x?.text||'')?.join('')||'').trim();
+      if(txt){status.className='am ok';status.textContent=`✓ Gemini connected — ${model}`;return}
+      errors.push(`${model}: response contained no text`);
+    }catch(e){errors.push(`${model}: ${e?.message||e}`)}
+  }
+  status.className='am err';status.textContent=`Gemini connection failed. ${errors[0]||'No model responded.'}`;
+}
+function saveGeminiKeyFromProfile(){
+  const input=$('#geminiKeyInput');
+  try{saveGeminiKey(input.value);input.value='';go();toast('Gemini API key saved on this device');}
+  catch(e){$('#geminiStatus').className='am err';$('#geminiStatus').textContent=e.message}
+}
+function removeGeminiKey(){clearGeminiKey();go();toast('Gemini API key removed from this device')}
 function me(){const m=S.me;return `<div class=card><div class=row><div class=av style="width:56px;height:56px">${esc((m.name||'?')[0])}</div><div><h3>${esc(m.name)}</h3><span class=mut>${esc(m.email)}</span></div></div></div><div class=card>${[['name','Name'],['title','Title'],['phone','Phone'],['addr','Location']].map(x=>`<label>${x[1]}</label><input id=m_${x[0]} value="${esc(m[x[0]])}">`).join('')}<button class=b onclick="saveMe()">Save profile</button></div>
+<h2>Gemini AI</h2><div class=card><div class=row><div class="aiagent" style="width:40px;height:40px">${ic('agent',20)}</div><div style="flex:1"><b>SpeechCare AI connection</b><div class=mut>Enter your Gemini API key here. It is stored only in this app's local storage for this private prototype and is not saved to Firestore.</div></div></div><label>Gemini API key</label><input id=geminiKeyInput type=password autocomplete=off placeholder="Paste your Gemini API key here"><div class=row><button class="b t" onclick="saveGeminiKeyFromProfile()">Save key</button><button class="b g" onclick="testGeminiConnection()">Test connection</button><button class="b g" onclick="removeGeminiKey()">Remove</button></div><div id=geminiStatus class="am ${geminiKey()?'ok':''}">${geminiKeyStatus()}</div><div class=mut style="margin-top:6px">You do not need a GitHub Secret or a new APK after changing the key.</div></div>
 <h2>My centers and daycares</h2><div class=card>${m.places.map((x,i)=>`<div class="row sp" style="padding:4px 0"><span>${esc(x.n)} <span class=chip>${TY[x.t]}</span></span><button class="ib" aria-label="Remove" onclick="S.me.places.splice(${i},1);save();go()">${ic('x',18)}</button></div>`).join('')||'<span class=mut>None yet. They are also added when you save a patient.</span>'}
 <hr style="border:0;border-top:1px solid var(--line)"><input id=np placeholder="Name of a center or daycare">${segH('np_t',[['center','Center'],['daycare','Daycare']],'center')}<button class="b s" onclick="const n=$('#np').value.trim();if(n){S.me.places.push({n,t:sv('np_t')});save();go()}">Add place</button></div>
 <button class="b r" style="background:var(--red)" onclick="logout()">Log out</button>`}

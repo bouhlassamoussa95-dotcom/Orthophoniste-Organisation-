@@ -1,13 +1,12 @@
-# SpeechCare — Gemini AI prototype
+# SpeechCare — Gemini runtime-key build
 
-SpeechCare is a speech-language therapy management app with a specialized in-app Gemini assistant.
+SpeechCare is a speech-language therapy management app with an in-app Gemini assistant.
 
-### Fast setup
-1. Open `www/gemini-config.js`.
-2. Paste your NEW Gemini API key in the placeholder.
-3. Keep the GitHub repository private.
-4. Push to `main` or run the Android GitHub Actions workflow.
+## Gemini setup
+The APK no longer depends on a GitHub Secret or a build-time API-key injection.
 
-The AI uses the official Gemini Interactions API first, automatically cycles through configured Flash/Lite model candidates, and falls back to the standard `generateContent` API if needed.
+After installing the APK: **Profile → Gemini AI → paste API key → Save key → Test connection**.
 
-See `AI_SETUP.md` for details.
+If the connection test succeeds, SpeechCare AI uses the same saved key.
+
+The app uses the official Gemini Interactions API first and automatically cycles through configured Flash/Lite models.
