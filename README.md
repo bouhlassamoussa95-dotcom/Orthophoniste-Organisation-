@@ -49,3 +49,33 @@ The workflow uses Node.js 20 and Java 17, creates the Capacitor Android project,
 - The AI assistant connects directly to OpenRouter. Add the key in Settings → AI and keep the model set to `openrouter/free` (or another model ending in `:free`). Do not commit or share the key.
 - The Android launcher icons are generated from `assets/SpeechCare_original_logo.png`, the exact original logo supplied for this app.
 - The AI panel stays mounted while chat messages update to avoid restarting the panel animation and flickering.
+
+
+## Arabic / Algerian Darija activity library
+
+SpeechCare includes an original, locally bundled activity library in Arabic and Algerian Darija: target-sound practice, auditory contrast, syllable practice, object functions, following directions, sentence completion, story sequencing, open-ended WH-style scene questions, emotion discussion, social problem-solving, conversation prompts, and categorisation. The activities are original SpeechCare implementations using general speech-language-therapy activity concepts. No Konvoo artwork, audio, characters, proprietary game layouts, or site text is bundled. Activity completion counts are stored locally on the device; they are not a clinical assessment or a standalone measure of progress.
+
+## Arabic keyboard on Android
+
+SpeechCare adds Arabic locale hints and right-to-left input support for text fields, but the keyboard layout is controlled by Android/Gboard. On the phone, open Settings → System → Keyboard → On-screen keyboard → Gboard → Languages, add Arabic, French, and English, then switch with the globe key or by long-pressing the space bar. The Android build workflow sets `android:windowSoftInputMode=adjustResize` so the visible app area can resize around the keyboard.
+
+
+## Arabic / Algerian Darija activity library
+
+SpeechCare includes an original, locally bundled activity library in Arabic and Algerian Darija: target-sound practice, auditory contrast, syllable practice, object functions, following directions, sentence completion, story sequencing, open-ended WH-style scene questions, emotion discussion, social problem-solving, conversation prompts, and categorisation. The activities are original SpeechCare implementations using general speech-language-therapy activity concepts. No Konvoo artwork, audio, characters, proprietary game layouts, or site text is bundled. Activity completion counts are stored locally on the device; they are not a clinical assessment or a standalone measure of progress.
+
+## Arabic keyboard on Android
+
+SpeechCare adds Arabic locale hints and right-to-left input support for text fields, but the keyboard layout is controlled by Android/Gboard. On the phone, open Settings → System → Keyboard → On-screen keyboard → Gboard → Languages, add Arabic, French, and English, then switch with the globe key or by long-pressing the space bar. The Android build workflow sets `android:windowSoftInputMode=adjustResize` so the visible app area can resize around the keyboard.
+
+
+## AI language and keyboard behavior
+
+The AI chat supports Auto (respond in the language of the latest message), Arabic/Algerian Darija, and French. Use the language buttons in the AI panel to choose the response language. The floating AI button opens the chat with one tap; dragging is not used. The optional patient context is an in-app animated dropdown rather than a native Android select dialog.
+
+Text fields intentionally do not force an HTML `lang` hint based on the app's display language, so Android/Gboard remains in control of keyboard-language selection. On Android, keyboard language switching is provided by Gboard or the installed keyboard app. If its language picker still closes immediately, update Gboard and Android System WebView/Chrome; there is a Chromium issue reported in recent Android builds where the Gboard language picker disappears in web input fields. This behavior cannot be completely fixed by application JavaScript alone.
+
+
+### Important note about keyboard language picker
+
+SpeechCare no longer assigns a fixed `lang` attribute to generic editable fields. This prevents the app's display language from nudging Android's input method to a single language. If Gboard's own language picker still disappears, the remaining behavior may be in the Android System WebView/Chromium input-method integration rather than the app: a related Chromium report describes the Gboard language picker closing in Android web input fields on recent Chrome builds. Update Gboard and Android System WebView from Google Play, then retest. Apps cannot directly control or force Gboard's active language.
