@@ -1,81 +1,75 @@
-# SpeechCare — Direct OpenRouter AI (personal Android app)
+# SpeechCare — Personal Android speech-therapy app
 
-SpeechCare uses a direct connection from the Android app to the OpenRouter Chat Completions API. Capacitor native HTTP is enabled for Android to avoid WebView CORS restrictions. **AI does not use Firebase Cloud Functions**, so you do not need Firebase Blaze or a Cloud Functions deployment for AI.
+SpeechCare is a Capacitor Android app for a speech-language therapist managing patients, sessions, consultations, reports and multi-center practice. The existing HTML/JavaScript screens, Firebase sign-in/sync, theme variables, five-tab navigation, side drawer and floating AI assistant are preserved.
 
-Firebase Authentication and Firestore remain in the app for sign-in and cloud sync. They are separate from the AI request path.
+## Main navigation
 
-## OpenRouter setup inside the installed app
+The five bottom tabs are **Home · Sessions · Patients · Consultations · Reports**. The side drawer keeps secondary destinations such as Profile, Dashboard, Activities, Today's Sessions, Calendar, Finance and Settings. The global floating **AI** button opens the assistant.
 
-1. Create an API key at https://openrouter.ai/settings/keys.
-2. Install the APK built from this project and open SpeechCare.
-3. Sign in (or use the app's preview mode, if enabled).
-4. Open Settings → AI.
-5. Paste the OpenRouter API key.
-6. Leave the model as `openrouter/free`, then choose **Save and test**.
+## OpenRouter AI
 
-SpeechCare permits only `openrouter/free` or model IDs ending in `:free` to help prevent accidental paid-model usage. OpenRouter free models are rate-limited and their availability can change. Check https://openrouter.ai/collections/free-models for current options.
+SpeechCare calls the OpenRouter Chat Completions API directly from Android using Capacitor native HTTP. AI does not require Firebase Cloud Functions or Firebase Blaze. The model defaults to `openrouter/free`; the app accepts only `openrouter/free` or model IDs ending in `:free` to reduce accidental paid-model selection.
 
-## API key and privacy warning
+You can enter a key once in **Settings → AI**, or preconfigure a personal APK using the GitHub Actions secret described in `README_GITHUB_API_KEY.md`. Build-time injection avoids manually entering the key into Settings, but **the key is still extractable from the resulting APK**. The workflow refuses to embed a key when the GitHub repository is public. Keep the repository and APK private, set a small usage limit on the OpenRouter key, and revoke it if the phone/APK is lost. A server-side proxy is required for a key that cannot be recovered from an APK.
 
-- The key is entered on the device and stored in the app's local WebView storage (`localStorage`). It is not included in the source files, GitHub repository, or APK at build time.
-- Because the key is stored on-device and the app calls OpenRouter directly, someone who can inspect the device/app data or reverse-engineer the APK may be able to retrieve it. Keep the APK and device private. Revoke the key if you suspect exposure.
-- AI prompts are sent directly to OpenRouter. Do not send patient names, phone numbers, addresses, or other identifying information. Review and anonymize clinical details before using AI, and follow your applicable privacy obligations.
-- Do not paste the API key into GitHub, source files, build logs, or ChatGPT.
+AI requests send their prompt content to OpenRouter. Avoid sending patient names, phone numbers, addresses or other identifying details; anonymize clinical context before requesting assistance.
 
-## Build the Android APK with GitHub Actions
+## Offline therapeutic activities
 
-1. Upload/commit the contents of this `speechcare/` folder to your SpeechCare GitHub repository (the repository root should contain `package.json`, `capacitor.config.json`, `www/`, and `.github/`).
-2. Push to the `main` branch, or open **Actions → Build SpeechCare APK (Direct OpenRouter) → Run workflow**.
-3. Open the completed workflow run and download the **SpeechCare** artifact. It contains `SpeechCare.apk`.
-4. Transfer the APK to your Android phone and install it. You may need to allow installation from that file manager/browser.
+The existing, original SpeechCare activities library remains inside the app. Two new React 18 + TypeScript + Tailwind games are bundled locally and require neither AI nor a network connection:
 
-The workflow uses Node.js 20 and Java 17, creates the Capacitor Android project, applies the supplied SpeechCare icon assets, and builds a debug APK.
+- **Syllable Train (قطار المقاطع):** build Arabic words by selecting syllables in sequence; includes prompts, immediate feedback, speech synthesis when an on-device voice is available, attempts, accuracy and therapist notes.
+- **Sound Detective (البحث عن الصوت):** listen to a spoken word and select its matching visual card; includes auditory prompts, feedback, attempts, accuracy and therapist notes.
 
-## Firebase notes
+All game text supports Arabic/Algerian Darija, French and English. Game results emit a typed completion event and are saved to the app's activity log; when started from a scheduled session, metrics are also attached to that session's `gameMetrics` and `sessionSummary`. These activities are practice tools, not standardized assessments or standalone diagnostic measures.
 
-- Firebase Authentication and Firestore are still used for account sign-in and optional cloud sync. This project does not deploy or call Firebase Cloud Functions for AI.
-- The existing Firebase web app configuration in `www/index.html` identifies the Firebase project; it is not an OpenRouter secret.
-- `firestore.rules` is included for reference. Do not change or deploy rules unless you understand the effect on your existing data.
+### Source architecture
 
-## App icon
+- `src/games/` — typed game models, original offline task data, localization, reusable game components and the React mount entry point.
+- `src/inventory/` — typed toy/material inventory, English/French/Algerian Arabic labels, persistent activity associations, photo selection and React mount entry point.
+- `src/inventory/photoSecurity.ts` — biometric/device-credential gate, native gallery and file picker, and app-private photo storage.
+- `src/ui/MobileBottomSheet.tsx` — reusable, accessible modal bottom sheet for longer/searchable choices.
+- `src/ui/AnchoredDropdown.tsx` — reusable anchored options menu for short choices.
+- `src/native/haptics.ts` — Capacitor LIGHT impact haptics with a best-effort browser fallback.
+- `src/games/tailwind.css` and `tailwind.config.cjs` — locally compiled Tailwind styles, prefixed with `sc-`, with preflight disabled so existing app CSS/theme variables are not reset. The same generated stylesheet serves the game and inventory React modules.
 
-`android-res/` contains only valid Android resource folders and launcher image sizes derived from the original SpeechCare logo supplied for this project. The original logo is preserved separately in `assets/SpeechCare_original_logo.png`; it is not copied into Android’s `res/` root.
+## Tactile layout and overlays
 
+The non-destructive interaction layer keeps the app's current visual theme and screens while adding 48px minimum interactive targets, 52px primary actions, fast press feedback, light haptics on taps, a 220ms drawer transition, a horizontally scrollable two-week date strip with snap, momentum-scrolling filters, custom anchored dropdowns for short options, and modal sheets for searchable patient choices. The bottom bar remains five tabs. No native HTML `<select>` controls remain in the app's screen markup.
 
-## Updated navigation and AI experience
+The Android build uses `android:windowSoftInputMode="adjustResize"` so the app can resize around the keyboard. The app no longer forces a fixed HTML language onto generic text fields. Android/Gboard still controls keyboard-language switching; SpeechCare cannot force the keyboard's selected language.
 
-- Main navigation is in the bottom bar: Home, Sessions, Patients, and Reports. These items are not duplicated in the side menu. Profile appears at the top of the side menu.
-- The floating **AI** button opens one persistent SpeechCare assistant panel. General questions work without selecting a patient; patient context is optional.
-- The AI assistant connects directly to OpenRouter. Add the key in Settings → AI and keep the model set to `openrouter/free` (or another model ending in `:free`). Do not commit or share the key.
-- The Android launcher icons are generated from `assets/SpeechCare_original_logo.png`, the exact original logo supplied for this app.
-- The AI panel stays mounted while chat messages update to avoid restarting the panel animation and flickering.
+## Exact launcher icon
+
+`www/logo.png`, `assets/SpeechCare_original_logo.png`, and the Android launcher density resources are generated from the exact SpeechCare logo image supplied by the app owner. The artwork has only been resized for Android density variants; it has not been redesigned. Adaptive launcher XML points at the matching foreground and background resources. The GitHub workflow applies these resources to the generated Android project before Gradle builds the APK.
 
 
-## Arabic / Algerian Darija activity library
+## Toy & Material Inventory
 
-SpeechCare includes an original, locally bundled activity library in Arabic and Algerian Darija: target-sound practice, auditory contrast, syllable practice, object functions, following directions, sentence completion, story sequencing, open-ended WH-style scene questions, emotion discussion, social problem-solving, conversation prompts, and categorisation. The activities are original SpeechCare implementations using general speech-language-therapy activity concepts. No Konvoo artwork, audio, characters, proprietary game layouts, or site text is bundled. Activity completion counts are stored locally on the device; they are not a clinical assessment or a standalone measure of progress.
+The secondary drawer includes **Toy & Material Inventory**. It provides a responsive grid of clinic materials with a thumbnail, name, category and linked therapy activities. The therapist can add a toy, select a gallery image or image file, add/remove linked activity names inline, search the inventory, and remove a toy using a two-tap confirmation. Labels are available in English, French and Arabic/Darija.
 
-## Arabic keyboard on Android
+### Inventory data and session planning
 
-SpeechCare adds Arabic locale hints and right-to-left input support for text fields, but the keyboard layout is controlled by Android/Gboard. On the phone, open Settings → System → Keyboard → On-screen keyboard → Gboard → Languages, add Arabic, French, and English, then switch with the globe key or by long-pressing the space bar. The Android build workflow sets `android:windowSoftInputMode=adjustResize` so the visible app area can resize around the keyboard.
+- `ToyInventoryItem` in `src/inventory/types.ts` is the shared TypeScript record.
+- Toy names, categories, activity links, notes and timestamps are stored in the existing SpeechCare app state (`S.toys`), saved locally and included in the existing Firestore JSON sync.
+- Session creation/editing displays the activities linked to inventory toys as quick-add chips. Selecting one adds the activity and toy name to the session's **Materials and linked activities** field. This text is saved with the session and shown on its session card. Group-session edits propagate the materials field when the group-wide option is selected.
+- Photo files are kept separately in Capacitor `Directory.Data` (the app-private data folder). Only the relative local photo path is included in app state. Photo bytes are not uploaded to Firestore, so a photo will not automatically appear on a second device after cloud restore.
 
+### Photo authorization and privacy boundary
 
-## Arabic / Algerian Darija activity library
+Before opening either the gallery or document picker, SpeechCare calls the native biometric authentication prompt. Device PIN/pattern/password fallback is enabled. The flow fails closed if the app is not running natively or Android reports no secure device credential/biometry. The photo is then copied into app-private storage. This is an **authentication gate**, not file encryption: the image is not cryptographically encrypted with a biometric-bound key. Use the phone's secure screen lock and do not treat the app-private file as a substitute for encrypted clinical storage.
 
-SpeechCare includes an original, locally bundled activity library in Arabic and Algerian Darija: target-sound practice, auditory contrast, syllable practice, object functions, following directions, sentence completion, story sequencing, open-ended WH-style scene questions, emotion discussion, social problem-solving, conversation prompts, and categorisation. The activities are original SpeechCare implementations using general speech-language-therapy activity concepts. No Konvoo artwork, audio, characters, proprietary game layouts, or site text is bundled. Activity completion counts are stored locally on the device; they are not a clinical assessment or a standalone measure of progress.
+The native inventory flow adds these Capacitor 6-compatible packages to the app: `@aparajita/capacitor-biometric-auth` 8.x, `@capacitor/camera` 6.x, `@capacitor/filesystem` 6.x, and `@capawesome/capacitor-file-picker` 6.x. GitHub Actions runs `npm install` and builds `www/inventory.js` from `src/inventory/main.tsx`; `www/index.html` mounts it when the Inventory screen is opened.
 
-## Arabic keyboard on Android
+## Build the APK with GitHub Actions
 
-SpeechCare adds Arabic locale hints and right-to-left input support for text fields, but the keyboard layout is controlled by Android/Gboard. On the phone, open Settings → System → Keyboard → On-screen keyboard → Gboard → Languages, add Arabic, French, and English, then switch with the globe key or by long-pressing the space bar. The Android build workflow sets `android:windowSoftInputMode=adjustResize` so the visible app area can resize around the keyboard.
+1. Put the contents of this `speechcare/` folder at the root of your private GitHub repository.
+2. Commit/push to `main`, or open **Actions → Build SpeechCare APK (Direct OpenRouter) → Run workflow**.
+3. The workflow installs Node dependencies, compiles the React/Tailwind game bundle, creates/syncs the Capacitor Android project, applies the exact launcher artwork and keyboard resize setting, then builds a debug APK.
+4. Download the **SpeechCare** artifact from the completed Actions run. The ZIP artifact contains `SpeechCare.apk`.
 
+For automatic key setup, add `OPENROUTER_API_KEY` under **GitHub repository Settings → Secrets and variables → Actions** before running the workflow. Read `README_GITHUB_API_KEY.md` first: the repository must be private and embedding the key is a personal-use convenience, not secure key storage.
 
-## AI language and keyboard behavior
+## Firebase
 
-The AI chat supports Auto (respond in the language of the latest message), Arabic/Algerian Darija, and French. Use the language buttons in the AI panel to choose the response language. The floating AI button opens the chat with one tap; dragging is not used. The optional patient context is an in-app animated dropdown rather than a native Android select dialog.
-
-Text fields intentionally do not force an HTML `lang` hint based on the app's display language, so Android/Gboard remains in control of keyboard-language selection. On Android, keyboard language switching is provided by Gboard or the installed keyboard app. If its language picker still closes immediately, update Gboard and Android System WebView/Chrome; there is a Chromium issue reported in recent Android builds where the Gboard language picker disappears in web input fields. This behavior cannot be completely fixed by application JavaScript alone.
-
-
-### Important note about keyboard language picker
-
-SpeechCare no longer assigns a fixed `lang` attribute to generic editable fields. This prevents the app's display language from nudging Android's input method to a single language. If Gboard's own language picker still disappears, the remaining behavior may be in the Android System WebView/Chromium input-method integration rather than the app: a related Chromium report describes the Gboard language picker closing in Android web input fields on recent Chrome builds. Update Gboard and Android System WebView from Google Play, then retest. Apps cannot directly control or force Gboard's active language.
+Firebase Authentication and Firestore remain available for sign-in and optional cloud synchronization. Firebase is separate from the direct OpenRouter AI request path. No Cloud Functions deployment or Blaze upgrade is needed for this AI architecture.

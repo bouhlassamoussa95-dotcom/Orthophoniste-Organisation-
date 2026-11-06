@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes sc-picker-in { from { opacity: 0; transform: translateY(-5px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+/* Isolated to the React game root: preserve SpeechCare's existing theme and reset. */
+#speechcare-game-root { color: var(--ink); font-family: inherit; }
+#speechcare-game-root *, #speechcare-game-root *::before, #speechcare-game-root *::after { box-sizing: border-box; }
+#speechcare-game-root button { touch-action: manipulation; transition: transform 70ms ease, background-color 100ms ease, border-color 100ms ease; }
+#speechcare-game-root button:active:not(:disabled) { transform: scale(.98); }
+#speechcare-game-root button:focus-visible, #speechcare-game-root textarea:focus-visible { outline: 3px solid var(--amb); outline-offset: 2px; }
+#speechcare-game-root textarea { font: inherit; resize: vertical; }
+@media (prefers-reduced-motion: reduce) { #speechcare-game-root *, #speechcare-game-root *::before, #speechcare-game-root *::after { transition: none !important; animation: none !important; } }
+
+@keyframes sc-game-pop { 0% { transform: scale(.97); opacity: .78; } 65% { transform: scale(1.015); } 100% { transform: scale(1); opacity: 1; } }
+#speechcare-game-root .sc-game-success { animation: sc-game-pop 240ms cubic-bezier(.2,.8,.2,1); }
