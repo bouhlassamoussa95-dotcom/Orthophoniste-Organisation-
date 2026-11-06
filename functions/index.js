@@ -1,39 +1,77 @@
-const { onCall, HttpsError } = require('firebase-functions/v2/https');
-const { defineSecret } = require('firebase-functions/params');
+const { onRequest } = require("firebase-functions/v2/https");
+const { defineSecret } = require("firebase-functions/params");
+const admin = require("firebase-admin");
 
-const GEMINI_API_KEY = defineSecret('GEMINI_API_KEY');
+admin.initializeApp();
+const OPENROUTER_API_KEY = defineSecret("OPENROUTER_API_KEY");
 
-const SYSTEM = `You are SpeechCare AI, a focused assistant inside a speech-language therapy management app.\n\nYour job is to help a speech-language therapist with therapy planning, activity ideas, patient-session organization, progress review, and educational explanations about speech, language, communication, and related conditions. Stay focused on speech-language therapy. Politely decline unrelated requests.\n\nDo not diagnose a patient, prescribe treatment, or claim certainty where clinical judgment is required. When patient information is provided, use only that information and do not invent facts. Prefer practical, age-appropriate, structured suggestions. The therapist remains responsible for clinical decisions.\n\nAnswer clearly and concisely unless the therapist asks for detail.`;
+exports.speechcareAI = onRequest(
+  { region: "us-central1", cors: true, secrets: [OPENROUTER_API_KEY], timeoutSeconds: 120, memory: "256MiB" },
+  async (req, res) => {
+    if (req.method !== "POST") return res.status(405).json({ error: "POST only" });
 
-exports.speechcareAI = onCall({
-  region: 'europe-west1',
-  secrets: [GEMINI_API_KEY],
-  timeoutSeconds: 60,
-  memory: '256MiB'
-}, async (request) => {
-  if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in first.');
-  if (request.auth.token.email_verified !== true) throw new HttpsError('permission-denied', 'Verify your email first.');
+    try {
+      const authHeader = req.headers.authorization || "";
+      const match = authHeader.match(/^Bearer (.+)$/i);
+      if (!match) return res.status(401).json({ error: "Sign-in required" });
 
-  const message = String(request.data?.message || '').trim();
-  if (!message) throw new HttpsError('invalid-argument', 'Message is required.');
-  if (message.length > 4000) throw new HttpsError('invalid-argument', 'Message is too long.');
+      // Validate Firebase Authentication token before allowing use of the AI service.
+      await admin.auth().verifyIdToken(match[1]);
 
-  const context = request.data?.patient || {patient:null,activities:[],sessions:[]};
-  const prompt = `${SYSTEM}\n\nRELEVANT SPEECHCARE DATA (use only if relevant):\n${JSON.stringify(context)}\n\nTHERAPIST MESSAGE:\n${message}`;
+      const body = req.body || {};
+      const messages = Array.isArray(body.messages) ? body.messages : [];
+      const system = typeof body.system === "string" ? body.system : "";
+      const model = typeof body.model === "string" && body.model.trim()
+        ? body.model.trim()
+        : "openai/gpt-4o-mini";
 
-  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY.value())}`;
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: {'content-type':'application/json'},
-    body: JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0.35,maxOutputTokens:1200}})
-  });
-  const data = await r.json();
-  if (!r.ok) {
-    console.error('Gemini error', r.status, data);
-    throw new HttpsError('internal', 'Gemini request failed.');
+      if (!messages.length || messages.length > 20) {
+        return res.status(400).json({ error: "Provide 1–20 chat messages." });
+      }
+      const safeMessages = messages
+        .filter(m => m && ["user", "assistant"].includes(m.role) && typeof m.content === "string")
+        .map(m => ({ role: m.role, content: m.content.slice(0, 12000) }));
+      if (!safeMessages.length) return res.status(400).json({ error: "No valid messages." });
+
+      const payload = {
+        model,
+        messages: [
+          ...(system ? [{ role: "system", content: system.slice(0, 12000) }] : []),
+          ...safeMessages
+        ],
+        temperature: 0.6,
+        max_tokens: 1800
+      };
+      if (body.json === true) payload.response_format = { type: "json_object" };
+
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${OPENROUTER_API_KEY.value()}`,
+          "Content-Type": "application/json",
+          "X-OpenRouter-Title": "SpeechCare"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        console.error("OpenRouter error status:", response.status);
+        return res.status(response.status >= 500 ? 502 : response.status)
+          .json({ error: data.error?.message || "OpenRouter request failed" });
+      }
+
+      const text = data.choices?.[0]?.message?.content;
+      if (typeof text !== "string" || !text.trim()) {
+        return res.status(502).json({ error: "OpenRouter returned an empty response." });
+      }
+      return res.status(200).json({ text });
+    } catch (err) {
+      if (err && (err.code === "auth/argument-error" || err.code === "auth/id-token-expired" || err.code === "auth/invalid-id-token")) {
+        return res.status(401).json({ error: "Please sign in again." });
+      }
+      console.error("SpeechCare AI function error:", err?.message || err);
+      return res.status(500).json({ error: "SpeechCare AI backend error." });
+    }
   }
-  const text = data?.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('')?.trim();
-  if (!text) throw new HttpsError('internal', 'Gemini returned no text.');
-  return {text};
-});
+);

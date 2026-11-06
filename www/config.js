@@ -1,2 +1,1 @@
-// Safe to commit. The GitHub workflow overwrites this file at build time with your secret key.
-window.APP_CONFIG = { GEMINI_API_KEY: "", GEMINI_MODEL: "gemini-2.5-flash" };
+// No API secrets are stored in the app. OpenRouter is accessed via Firebase Cloud Functions.\nwindow.APP_CONFIG = {};\n
