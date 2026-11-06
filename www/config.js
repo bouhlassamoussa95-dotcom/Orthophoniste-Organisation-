@@ -1,1 +1,2 @@
-// No API secrets are stored in the app. OpenRouter is accessed via Firebase Cloud Functions.\nwindow.APP_CONFIG = {};\n
+// No API key is bundled with the app.
+window.APP_CONFIG = {};

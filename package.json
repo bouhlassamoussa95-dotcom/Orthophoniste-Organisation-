@@ -2,7 +2,7 @@
   "name": "speechcare",
   "version": "1.0.0",
   "private": true,
-  "description": "SpeechCare - speech-language therapist assistant (Capacitor + Firebase + OpenRouter)",
+  "description": "SpeechCare - personal speech-language therapy assistant (Capacitor + Firebase Auth/Firestore + direct OpenRouter AI)",
   "scripts": {
     "prepare": "node scripts/copy-vendor.js"
   },

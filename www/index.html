@@ -314,10 +314,10 @@ Rating by condition (IDE-style)|Évaluation par pathologie (type IDE)|تقييم
 Evaluation report by period|Rapport d’évaluation par période|تقرير تقييم حسب الفترة
 Add a patient first.|Ajoutez d’abord un patient.|أضف مريضًا أولًا.
 Report language:|Langue du rapport :|لغة التقرير:
-Sections are pre-filled from the profile and session log. Edit, then copy for Gemini or download as Word.|Les sections sont pré-remplies à partir du profil et du journal. Modifiez, puis copiez pour Gemini ou téléchargez en Word.|الأقسام معبّأة مسبقًا من الملف وسجل الحصص. عدّلي ثم انسخي لـ Gemini أو نزّلي بصيغة Word.
-Copy for Gemini|Copier pour Gemini|نسخ لـ Gemini
+Sections are pre-filled from the profile and session log. Edit, then copy the report text or download it as Word.|Les sections sont pré-remplies à partir du profil et du journal. Modifiez, puis copiez le rapport ou téléchargez-le en Word.|الأقسام معبّأة مسبقًا من الملف وسجل الحصص. عدّلي ثم انسخي نص التقرير أو نزّليه بصيغة Word.
+Copy report text|Copier le rapport|نسخ التقرير
 Download Word|Télécharger Word|تنزيل Word
-Copied. Paste it into Gemini.|Copié. Collez-le dans Gemini.|تم النسخ. الصقيه في Gemini.
+Report text copied.|Texte du rapport copié.|تم نسخ نص التقرير.
 Copy was blocked. Select the text manually.|Copie bloquée. Sélectionnez le texte manuellement.|تم حظر النسخ. حددي النص يدويًا.
 If nothing downloaded, use Copy instead.|Si rien n’a été téléchargé, utilisez Copier.|إن لم يتم التنزيل، استخدمي النسخ.
 Download blocked. Use Copy instead.|Téléchargement bloqué. Utilisez Copier.|التنزيل محظور. استخدمي النسخ.
@@ -426,14 +426,14 @@ Only done sessions and paid consultations are counted.|Seules les séances termi
 Session price (optional)|Prix de la séance (facultatif)|سعر الحصة (اختياري)
 Uses the place price if empty|Utilise le prix du lieu si vide|يُستخدم سعر المكان إن تُرك فارغًا
 Nothing counted yet.|Rien de comptabilisé pour l’instant.|لا شيء محسوب بعد.
-AI (OpenRouter)|IA (Gemini)|الذكاء الاصطناعي (Gemini)
-OpenRouter AI backend|Clé API Gemini|مفتاح Gemini API
+AI (OpenRouter)|IA (OpenRouter)|الذكاء الاصطناعي (OpenRouter)
+OpenRouter API key|Clé API OpenRouter|مفتاح OpenRouter API
 Model name|Nom du modèle|اسم النموذج
 Save AI settings|Enregistrer les réglages IA|حفظ إعدادات الذكاء الاصطناعي
 AI settings saved|Réglages IA enregistrés|تم حفظ إعدادات الذكاء الاصطناعي
 Key included in this build.|Clé incluse dans cette version.|المفتاح مضمّن في هذه النسخة.
 No API key yet|Pas encore de clé API|لا يوجد مفتاح API بعد
-Add your Gemini key in Settings → AI, or in config.js before building.|Ajoutez votre clé Gemini dans Paramètres → IA, ou dans config.js avant la compilation.|أضيفي مفتاح Gemini في الإعدادات ← الذكاء الاصطناعي، أو في config.js قبل البناء.
+Add your OpenRouter API key in Settings → AI.|Ajoutez votre clé API OpenRouter dans Paramètres → IA.|أضيفي مفتاح OpenRouter في الإعدادات ← الذكاء الاصطناعي.
 Patient names, phones and parents are never sent to the AI.|Les noms, téléphones et parents des patients ne sont jamais envoyés à l’IA.|لا يتم إرسال أسماء المرضى وهواتفهم وأوليائهم إلى الذكاء الاصطناعي أبدًا.
 What do you want help with?|Sur quoi voulez-vous de l’aide ?|بماذا تريدين المساعدة؟
 Patient help|Aide patient|مساعدة حول مريض
@@ -463,7 +463,7 @@ AI answers are suggestions. Check them with your clinical judgement.|Les répons
 AI error. Try again.|Erreur IA. Réessayez.|خطأ في الذكاء الاصطناعي. حاولي مجددًا.
 The API key is not valid.|La clé API n’est pas valide.|مفتاح API غير صالح.
 Too many AI requests. Wait a moment.|Trop de requêtes IA. Patientez.|طلبات كثيرة. انتظري قليلًا.
-Names are hidden before sending.|Les noms sont masqués avant l’envoi.|تُخفى الأسماء قبل الإرسال.
+Review identifying details before sending.|Vérifiez les informations identifiantes avant l’envoi.|راجعي المعلومات التي قد تكشف هوية المريض قبل الإرسال.
 Addressed to|Destinataire|موجّه إلى
 Teacher|Enseignant(e)|المعلم(ة)
 School director|Directeur(trice) de l’école|مدير(ة) المدرسة
@@ -496,11 +496,11 @@ Quick setup (one time)|Configuration rapide (une fois)|إعداد سريع (مر
 Save and test|Enregistrer et tester|حفظ واختبار
 Check my key|Vérifier ma clé|التحقق من مفتاحي
 Advanced: model name|Avancé : nom du modèle|متقدم: اسم النموذج
-Paste your Gemini key first.|Collez d’abord votre clé Gemini.|الصقي مفتاح Gemini أولًا.
+Add your OpenRouter API key first.|Ajoutez d’abord votre clé API OpenRouter.|أضيفي مفتاح OpenRouter أولًا.
 Connected. Model:|Connecté. Modèle :|تم الاتصال. النموذج:
 No internet connection.|Pas de connexion internet.|لا يوجد اتصال بالإنترنت.
-This key is not valid. Copy it again from Google AI Studio (it starts with AIza).|Cette clé n’est pas valide. Copiez-la à nouveau depuis Google AI Studio (elle commence par AIza).|هذا المفتاح غير صالح. انسخيه مجددًا من Google AI Studio (يبدأ بـ AIza).
-This key is not allowed to use Gemini. Create a new key in Google AI Studio, or check that your country is supported.|Cette clé n’a pas accès à Gemini. Créez une nouvelle clé dans Google AI Studio ou vérifiez que votre pays est pris en charge.|هذا المفتاح غير مسموح له باستخدام Gemini. أنشئي مفتاحًا جديدًا في Google AI Studio أو تأكدي أن بلدك مدعوم.
+This API key is not valid. Check your OpenRouter key.|Cette clé API n’est pas valide. Vérifiez votre clé OpenRouter.|مفتاح API غير صالح. تحققي من مفتاح OpenRouter.
+This key cannot access the selected model. Check your OpenRouter account and model.|Cette clé ne peut pas accéder au modèle sélectionné. Vérifiez votre compte OpenRouter et le modèle.|هذا المفتاح لا يمكنه الوصول إلى النموذج المحدد. تحققي من حساب OpenRouter والنموذج.
 Free limit reached for now. Wait one minute and try again.|Limite gratuite atteinte. Attendez une minute et réessayez.|تم بلوغ الحد المجاني. انتظري دقيقة ثم أعيدي المحاولة.
 The AI returned no answer. Rephrase and try again.|L’IA n’a pas répondu. Reformulez et réessayez.|لم يعطِ الذكاء الاصطناعي إجابة. أعيدي الصياغة وحاولي مجددًا.
 Set as next session goal|Définir comme objectif de la prochaine séance|تعيين كهدف للحصة القادمة
@@ -690,12 +690,12 @@ function rep(){if(!S.p.length)return '<div class="card mut">Add a patient first.
 return `<label>Patient</label><select onchange="V.pid=this.value;go()">${S.p.map(p=>`<option value="${p.id}"${p.id==V.pid?' selected':''}>${full(p)}</option>`).join('')}</select>
 <label>Report type</label><select onchange="V.rm=this.value;go()">${Object.keys(MODELS).map(k=>`<option value=${k}${V.rm==k?' selected':''}>${MODELS[k][0]}</option>`).join('')}</select>
 ${V.rm=='school'?`<label>Addressed to</label><select onchange="V.rr=this.value;go()">${[['teacher','Teacher'],['director','School director'],['counselor','School counselor'],['doctor','Doctor'],['parents','Parents']].map(x=>`<option value=${x[0]}${(V.rr||'teacher')==x[0]?' selected':''}>${x[1]}</option>`).join('')}</select>`:''}<div class=row style="margin:6px 0 10px">${V.rm=='eval'?[1,3,6].map(n=>`<button class="pill${V.rp==n?' on':''}" onclick="V.rp=${n};go()">${n} ${T(n>1?'months':'month')}</button>`).join(''):''}<span class=mut>Report language:</span>${[['en','EN'],['fr','FR'],['ar','عربي']].map(x=>`<button class="pill${V.rl==x[0]?' on':''}" onclick="V.rl='${x[0]}';go()">${x[1]}</button>`).join('')}</div>
-<div class=mut>Sections are pre-filled from the profile and session log. Edit, then copy for Gemini or download as Word.</div>
+<div class=mut>Sections are pre-filled from the profile and session log. Edit, then copy the report text or download it as Word.</div>
 ${secs().map((s,i)=>`<div class="card sec rs" style="--c:${COL[i%6]}"><label>${esc(s[0])}</label><textarea data-t="${esc(s[0])}" dir=auto style="min-height:90px">${esc(s[1])}</textarea></div>`).join('')}
-<div class=row><button class="b t" onclick="cp()">Copy for Gemini</button><button class=b onclick="dl()">Download Word</button><button class="b g" onclick="aiPolish()">${ic('chat',16)} Polish with AI</button></div><div class=mut id=rmsg style="margin-top:8px"></div>`}
+<div class=row><button class="b t" onclick="cp()">Copy report text</button><button class=b onclick="dl()">Download Word</button><button class="b g" onclick="aiPolish()">${ic('chat',16)} Polish with AI</button></div><div class=mut id=rmsg style="margin-top:8px"></div>`}
 const body=()=>[...document.querySelectorAll('.rs textarea')].map(t=>({t:t.dataset.t,v:t.value}));
-function cp(){const ix=V.rl=='fr'?1:V.rl=='ar'?2:0,tx=[`Complete and polish this speech-language therapy report (${MODELS[V.rm][0]}). Keep the structure and titles.`,`Complète et améliore ce compte rendu orthophonique (${MODELS[V.rm][1]}). Garde la structure et les titres.`,`أكمل وحسّن هذا التقرير الأرطفوني (${MODELS[V.rm][2]}). حافظ على الهيكل والعناوين.`][ix]+`\n\n`+body().map(s=>`## ${s.t}\n${s.v}`).join('\n\n'),ok=()=>$('#rmsg').textContent='Copied. Paste it into Gemini.';try{navigator.clipboard.writeText(tx).then(ok,()=>fb(tx))}catch(e){fb(tx)}}
-function fb(tx){const t=document.createElement('textarea');t.value=tx;document.body.appendChild(t);t.select();let r=false;try{r=document.execCommand('copy')}catch(e){}t.remove();$('#rmsg').textContent=r?'Copied. Paste it into Gemini.':'Copy was blocked. Select the text manually.'}
+function cp(){const ix=V.rl=='fr'?1:V.rl=='ar'?2:0,tx=[`Complete and polish this speech-language therapy report (${MODELS[V.rm][0]}). Keep the structure and titles.`,`Complète et améliore ce compte rendu orthophonique (${MODELS[V.rm][1]}). Garde la structure et les titres.`,`أكمل وحسّن هذا التقرير الأرطفوني (${MODELS[V.rm][2]}). حافظ على الهيكل والعناوين.`][ix]+`\n\n`+body().map(s=>`## ${s.t}\n${s.v}`).join('\n\n'),ok=()=>$('#rmsg').textContent='Report text copied.';try{navigator.clipboard.writeText(tx).then(ok,()=>fb(tx))}catch(e){fb(tx)}}
+function fb(tx){const t=document.createElement('textarea');t.value=tx;document.body.appendChild(t);t.select();let r=false;try{r=document.execCommand('copy')}catch(e){}t.remove();$('#rmsg').textContent=r?'Report text copied.':'Copy was blocked. Select the text manually.'}
 function dl(){const p=P(V.pid),rtl=V.rl=='ar',m=S.me,h=`<html dir="${rtl?'rtl':'ltr'}"><head><meta charset="utf-8"><style>body{font-family:Calibri,Arial;color:#17262b}h1{background:#0f7a72;color:#fff;padding:10px 14px;font-size:20pt}h2{color:#5b3f8c;border-bottom:2px solid #0f7a72;font-size:13pt}p{white-space:pre-wrap}</style></head><body><h1>${esc(MODELS[V.rm][V.rl=='fr'?1:V.rl=='ar'?2:0])}</h1><p><b>${esc(rn(p))}</b> – ${age(p.birth)}</p>${body().map(s=>`<h2>${esc(s.t)}</h2><p>${esc(s.v)}</p>`).join('')}<p><br>${esc(m.name)}<br>${esc(m.title)}<br>${esc(m.phone)} · ${esc(m.email)}</p></body></html>`;
 try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff',h],{type:'application/msword'}));a.download=`report_${p.name}_${V.rm}.doc`;a.click();$('#rmsg').textContent='If nothing downloaded, use Copy instead.'}catch(e){$('#rmsg').textContent='Download blocked. Use Copy instead.'}}
 /* ---------- profile ---------- */
@@ -748,31 +748,33 @@ return `<div class=seg>${[['week','Week'],['month','Month'],['year','Year'],['al
 <div class=mut>${fx?`${T('My share')} ${money(Math.min(x.fee,x.mine))} · ${T('Owner')} ${money(Math.max(0,x.fee-x.mine))}`:`${T('My share')} ${x.my}% · ${T('Owner')} ${100-x.my}%`}</div></div>`}).join('')}
 <div class="card sec" style="--c:#2fb872"><h3>Add a center or daycare</h3><input id=np placeholder="Name of the center or daycare">${segH('np_t',[['center','Center'],['daycare','Daycare']],'center',"$('#np_my').value=sv('np_t')=='daycare'?60:50")}<div class=row style="flex-wrap:nowrap"><div style="flex:1"><label>My % of the price</label><input id=np_my type=number min=0 max=100 value=50></div><div style="flex:1"><label>Price per session</label><input id=np_fee type=number min=0 value=0></div></div><button class="b s" onclick="addPl()">Add place</button></div>
 <label>Currency</label><input value="${esc(S.me.cur)}" onchange="S.me.cur=this.value.trim()||'DA';save();go()">`}
-/* ---------- AI (OpenRouter via secure Firebase backend) + floating assistant ---------- */
-const OR_MODEL=()=>localStorage.getItem('speechcare_or_model')||'openai/gpt-4o-mini',
-OR_ENDPOINT=()=>localStorage.getItem('speechcare_or_endpoint')||'https://us-central1-oprthophoniste-organisation.cloudfunctions.net/speechcareAI',
+/* ---------- AI (direct OpenRouter connection for personal use) + floating assistant ---------- */
+const OR_MODEL=()=>{const saved=localStorage.getItem('speechcare_or_model')||'';return saved==='openrouter/free'||/:free$/i.test(saved)?saved:'openrouter/free'},
+OR_ENDPOINT=()=>'https://openrouter.ai/api/v1/chat/completions',
+OR_KEY=()=>localStorage.getItem('speechcare_or_key')||'',
+isFreeModel=m=>m==='openrouter/free'||/:free$/i.test(m||''),
 LN=l=>({en:'English',fr:'French',ar:'Arabic'}[l||PR.lang]);
-const SYS=l=>`You are SpeechCare Assistant, a warm, expert clinical co-pilot for a speech-language therapist (orthophoniste, neurolinguist) in Algeria who works in French, Arabic (including Algerian Darija) and English with children and adults. Scope: articulation and phonological disorders, apraxia of speech, language delay, developmental language disorder, ADHD, learning difficulties (dyslexia, dyscalculia, dysgraphia, dysorthographia), stuttering, voice, hearing loss, aphasia, Alzheimer, Parkinson, post-stroke, TBI, cerebral palsy. The therapist uses a neuro-geo-pathology approach: link symptoms to affected region (frontal, parietal, temporal, occipital) and sub-skills involved, then choose activities step by step. Be practical: concrete activities, materials, example words or sentences in patient's language, grade difficulty, measure progress, SMART goals, session structure (warm-up, core task, generalisation, home task), parent coaching, behaviour tips. Ask at most one short clarifying question, only if essential. Mention red flags that need referral when relevant. Give options, never a final diagnosis: therapist decides. Keep answers short, headings and bullets. Reply in user's last-message language; if unclear use ${LN(l)}.`;
-const DEMO=()=>'**Demo reply**\\n- This is a sample response in preview mode.\\n- In the installed app, sign in and configure your secure Firebase backend to use OpenRouter.';
+const SYS=l=>`You are SpeechCare Assistant, a warm, expert clinical co-pilot for a speech-language therapist (orthophoniste, neurolinguist) in Algeria who works in French, Arabic (including Algerian Darija) and English with children and adults. Scope: articulation and phonological disorders, apraxia of speech, language delay, developmental language disorder, ADHD, learning difficulties (dyslexia, dyscalculia, dysgraphia, dysorthographia), stuttering, voice, hearing loss, aphasia, Alzheimer, Parkinson, post-stroke, TBI, cerebral palsy. Be practical: concrete activities, materials, example words or sentences in patient's language, grade difficulty, measure progress, SMART goals, session structure, parent coaching, behaviour tips. Ask at most one short clarifying question, only if essential. Mention red flags that need referral when relevant. Give options, never a final diagnosis: therapist decides. Keep answers short, headings and bullets. Reply in user's last-message language; if unclear use ${LN(l)}.`;
 async function gem(msgs,sys,json){
- if(U&&U.uid=='preview')return DEMO();
- const user=fa&&fa.currentUser;if(!user)throw{code:'auth'};
- let token;try{token=await user.getIdToken()}catch(e){throw{code:'auth'}}
- let r;try{r=await fetch(OR_ENDPOINT(),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({messages:msgs.map(m=>({role:m.r=='u'?'user':'assistant',content:m.t})),system:sys,json:!!json,model:OR_MODEL()})})}catch(e){throw{code:'net'}}
- const d=await r.json().catch(()=>({}));if(!r.ok)throw{code:r.status,msg:d.error||d.message||'Backend request failed'};
- if(!d.text)throw{code:'empty'};return d.text;
+ const key=OR_KEY(),model=OR_MODEL();if(!key)throw{code:'nokey'};if(!isFreeModel(model))throw{code:'paidmodel'};
+ let r;try{r=await fetch(OR_ENDPOINT(),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'X-OpenRouter-Title':'SpeechCare'},body:JSON.stringify({model,messages:[{role:'system',content:sys},...msgs.map(m=>({role:m.r=='u'?'user':'assistant',content:m.t}))],temperature:0.4})})}catch(e){throw{code:'net'}}
+ const d=await r.json().catch(()=>({}));if(!r.ok)throw{code:r.status,msg:d.error?.message||d.error||d.message||'OpenRouter request failed'};
+ const text=d.choices?.[0]?.message?.content;if(!text)throw{code:'empty'};return text;
 }
 function aiErr(e){const c=e&&e.code,m=String((e&&e.msg)||'');let t='AI request failed. Please try again.';
- if(c=='auth'||c==401)t='Please sign in again. The secure AI service requires a signed-in account.';
- else if(c=='net')t='Could not connect to the SpeechCare AI server. Check your internet connection.';
- else if(c==403)t='Your account is not authorized to use the AI backend.';
- else if(c==429)t='AI usage limit reached. Please wait and try again.';
- else if(c=='empty')t='The AI returned no answer. Please try again.';
+ if(c=='nokey')t='Please add your OpenRouter API key in Settings → AI.';
+ else if(c==401)t='OpenRouter API key is invalid. Check your key in Settings → AI.';
+ else if(c==402)t='OpenRouter could not serve this free model right now. Try again later.';
+ else if(c==429)t='OpenRouter free request limit reached. Please wait and try again.';
+ else if(c=='paidmodel')t='To avoid charges, use openrouter/free or a model ID ending in :free.';
+ else if(c=='net')t='Could not connect to OpenRouter. Check internet connection.';
+ else if(c=='empty')t='AI returned no answer. Please try again.';
+ else if(c=='format')t='AI returned an unexpected report format. Please try again.';
  return T(t)+(m?` [${m.slice(0,180)}]`:'');
 }
 async function gtest(box){const set=(t,c)=>{const e=$(box);if(e){e.textContent=t;e.className='am '+(c||'')}};
- set(T('Testing secure OpenRouter connection…'));
- try{const out=await gem([{r:'u',t:'Reply with the single word OK.'}],'You are a connection test.');set(T('Connected to SpeechCare AI backend. Model:')+' '+OR_MODEL(),'ok');return 1}
+ set(T('Testing OpenRouter connection…'));
+ try{await gem([{r:'u',t:'Reply with the single word OK.'}],'You are a connection test.');set(T('Connected directly to OpenRouter. Model:')+' '+OR_MODEL(),'ok');return 1}
  catch(e){set(aiErr(e),'err');return 0}}
 function pctx(p){const D=S.a.filter(a=>a.pid==p.id&&a.status=='done').sort((x,y)=>y.date.localeCompare(x.date));return `Age: ${age(p.birth)}.\nConditions: ${cn(p).join('; ')||'not specified'}.\nSymptoms: ${p.symptoms||'-'}.\nDiagnostic: ${p.diag||'-'}.\nCurrent treatment plan: ${p.plan||'-'}.\nFrequency: ${fq(p)}; sessions done: ${D.length}.\nRecent sessions:\n${D.slice(0,6).map(a=>`- ${a.date}: goal "${a.goal||'-'}"; remark "${a.remark||'-'}"`).join('\n')||'- none'}`}
 const md=x=>esc(x).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/^#{1,4}\s*(.+)$/gm,'<b>$1</b>').replace(/^\s*[-*•]\s+(.+)$/gm,'<div style="padding-inline-start:14px;text-indent:-10px">• $1</div>').replace(/<\/div>\n/g,'</div>').replace(/\n/g,'<br>');
@@ -800,7 +802,7 @@ if(V.t=='fin')return[['Summarize my earnings','Summarize these earnings in 3 sho
 if(V.t=='cons')return[['Questions to ask the parents','List the key questions to ask the parents in a first meeting about a child with speech or language concerns.']];
 return[['Help me plan a session','Help me plan a 45-minute speech therapy session. Ask me for the age and condition if you need it.'],['A child refuses to cooperate. Ideas?','A child refuses to cooperate in the session. Give me practical ideas to regain engagement.'],['Write a message to the parents','Write a short, kind message to the parents about the child’s progress and the home task.']]}
 function agChip(i){const c=agChips()[i];if(c[2]=='polish'){agClose();aiPolish();return}agSend(c[1],c[0],c[2])}
-function agSetup(){return `<div class="card sec" style="--c:#e8a33d"><h3>SpeechCare AI setup</h3><div style="font-size:14px;line-height:1.75"><div>1. Sign in to SpeechCare.</div><div>2. Ask the administrator to deploy the secure Firebase AI function.</div><div>3. Open Settings → AI and test the connection.</div><div>Your OpenRouter key is never entered into the app.</div></div><button class="b" onclick="AG.setup=0;agRender()">Continue</button></div>`}
+function agSetup(){return `<div class="card sec" style="--c:#e8a33d"><h3>Connect SpeechCare AI</h3><div style="font-size:14px;line-height:1.75"><div>1. Sign in to SpeechCare or use preview mode.</div><div>2. Open Settings → AI.</div><div>3. Paste your OpenRouter API key.</div><div>4. Keep the model set to openrouter/free, then tap Save and test.</div><div>Your key is stored on this device and sent directly to OpenRouter when you use AI. Do not share this APK.</div></div><button class="b" onclick="AG.setup=0;agRender()">Continue</button></div>`}
 async function agSaveKey(){AG.setup=0;agRender()}
 function agBub(m,i){if(m.r=='u')return `<div style="display:flex;justify-content:flex-end;margin:8px 0"><div class=bu>${esc(m.s||m.t)}</div></div>`;
 if(m.err)return `<div class=card style="border-color:var(--red);margin:8px 0"><div class=am2 style="white-space:pre-wrap">${esc(m.t)}</div><div class=row style="margin-top:8px"><button class="b s" onclick="AG.setup=1;agRender()">Check my key</button></div></div>`;
@@ -809,7 +811,7 @@ function agRender(){const el=$('#agp');if(!el||!AG.open)return;const keep=($('#a
 el.innerHTML=`<div class=agbox><div class=agh><div style="width:38px;height:38px">${agSvg('h',38)}</div><div style="flex:1"><b>SpeechCare Assistant</b><div style="font-size:12px;opacity:.85">Speech therapy co-pilot</div></div><button class=ib aria-label="New chat" onclick="agNew()">${ic('refresh',20)}</button><button class=ib aria-label="Close" onclick="agClose()">${ic('x',22)}</button></div>
 <div style="padding:8px 14px 0"><select aria-label="Patient" onchange="AG.pid=this.value;AG.cid='';AG.msgs=[];agRender()"><option value="">General question</option>${S.p.map(p=>`<option value="${p.id}"${p.id==AG.pid?' selected':''}>${full(p)}</option>`).join('')}</select></div>
 <div class=agm id=agm>${(!ck||AG.setup)?agSetup():''}${AG.msgs.length||!ck?'':`<div class=card style="margin:4px 0"><div class=am2>Hi! I’m your speech therapy assistant. Ask me about a patient, a session where you feel stuck, a plan, a report or a parent meeting.</div></div>`}${AG.msgs.map(agBub).join('')}${AG.busy?'<div class=card><div class=typing><span></span><span></span><span></span></div></div>':''}</div>
-<div class=agi><div class=fltr style="margin-bottom:6px">${ch.map((c,i)=>`<button class=pill onclick="agChip(${i})">${c[0]}</button>`).join('')}</div><div class=row style="flex-wrap:nowrap;align-items:flex-end"><textarea id=aq placeholder="Ask something…" style="min-height:46px;max-height:120px;margin:0" onkeydown="if(event.key=='Enter'&&!event.shiftKey){event.preventDefault();agSend()}"></textarea><button class=b onclick="agSend()" aria-label="Send">${ic('send',20)}</button></div><div class=mut style="margin-top:6px;font-size:11px">AI answers are suggestions. Check them with your clinical judgement.</div><div class=mut style="font-size:11px">Patient names, phones and parents are never sent to the AI.</div></div></div>`;
+<div class=agi><div class=fltr style="margin-bottom:6px">${ch.map((c,i)=>`<button class=pill onclick="agChip(${i})">${c[0]}</button>`).join('')}</div><div class=row style="flex-wrap:nowrap;align-items:flex-end"><textarea id=aq placeholder="Ask something…" style="min-height:46px;max-height:120px;margin:0" onkeydown="if(event.key=='Enter'&&!event.shiftKey){event.preventDefault();agSend()}"></textarea><button class=b onclick="agSend()" aria-label="Send">${ic('send',20)}</button></div><div class=mut style="margin-top:6px;font-size:11px">AI answers are suggestions. Check them with your clinical judgement.</div><div class=mut style="font-size:11px">Do not include patient names, contact details or other identifying information. Your messages are sent to OpenRouter.</div></div></div>`;
 $('#aq').value=keep;const m=$('#agm');m.scrollTop=m.scrollHeight}
 function agContext(){const p=P(AG.pid),o=[`Screen: ${V.t}. Today: ${td()}.`];if(p)o.push('PATIENT:\n'+pctx(p)+'\nNeuro-geo focus (affected regions and skills): '+(p.conds||[]).map(i=>C.find(c=>c[0]==i)[2]).join(' | '));
 const c=S.c.find(x=>x.id==AG.cid);if(c){const q=P(c.pid);o.push(`CONSULTATION: type ${c.type}; reason: ${c.reason||'-'}.${q?'\nRelated patient:\n'+pctx(q):''}`)}
@@ -822,11 +824,22 @@ function agCopy(i){const t=AG.msgs[i].t,f=()=>{const x=document.createElement('t
 function agPlan(i){const p=P(AG.pid);if(!p)return;p.plan=(p.plan?p.plan+'\n\n':'')+AG.msgs[i].t;save();toast('Added to the treatment plan')}
 function agGoal(i){const p=P(AG.pid);if(!p)return;const n=S.a.filter(a=>a.pid==p.id&&a.status=='scheduled'&&a.date>=td()).sort((x,y)=>(x.date+x.time).localeCompare(y.date+y.time))[0];if(!n)return toast('No upcoming session for this patient.');n.goal=AG.msgs[i].t.replace(/^["“]|["”]$/g,'').trim().slice(0,300);save();toast('Goal set for the next session');go()}
 async function aiGoal(){const p=P($('#ap').value);if(!p)return;toast('Thinking…');try{$('#ag').value=(await gem([{r:'u',t:'Suggest ONE specific, measurable goal (max 25 words) for the next session. Output only the goal.'}],SYS()+'\n\nCONTEXT (anonymous):\n'+pctx(p))).trim()}catch(e){toast(aiErr(e))}}
-async function aiPolish(){const p=P(V.pid),nm=rn(p),b=body();if(!b.length)return;const mk=x=>nm?x.split(nm).join('[PATIENT]'):x,rs=x=>x.split('[PATIENT]').join(nm);$('#rmsg').textContent=T('Thinking…');
-try{const out=await gem([{r:'u',t:'Improve this speech-language therapy report. Keep the same number and order of sections and keep every fact unchanged. Do not invent data. Write clearly and professionally in '+LN(V.rl)+'. Keep any [PATIENT] placeholder as is. Return a JSON array of strings: one polished text per section, same order. Sections:\n'+JSON.stringify(b.map(x=>({title:x.t,text:mk(x.v)})))}],SYS(V.rl),1),arr=JSON.parse(out.replace(/```json|```/g,'').trim());
-document.querySelectorAll('.rs textarea').forEach((t,i)=>{if(typeof arr[i]=='string'&&arr[i].trim())t.value=rs(arr[i])});$('#rmsg').textContent=T('Report improved by AI. Please review it.')+' '+T('Names are hidden before sending.')}catch(e){$('#rmsg').textContent=aiErr(e)}}
-function aiCard(){return `<div class="card sec" style="--c:#0ea5e9"><h3>AI (OpenRouter)</h3><div class=mut>Secure backend connection. The OpenRouter API key is stored on Firebase—not on this phone.</div><label>Firebase AI endpoint</label><input id=orendpoint type=url value="${esc(OR_ENDPOINT())}" placeholder="https://...cloudfunctions.net/speechcareAI"><label>OpenRouter model ID</label><input id=ormodel value="${esc(OR_MODEL())}" placeholder="openai/gpt-4o-mini"><button class="b s" onclick="saveAI()">Save and test</button><div class=am id=aimsg></div><div class=mut>Model catalog: <a href="https://openrouter.ai/models" target="_blank" rel="noopener">OpenRouter models</a></div></div>`}
-async function saveAI(){try{const endpoint=$('#orendpoint').value.trim(),model=$('#ormodel').value.trim();if(endpoint)localStorage.setItem('speechcare_or_endpoint',endpoint);if(model)localStorage.setItem('speechcare_or_model',model)}catch(e){}await gtest('#aimsg')}
+async function aiPolish(){
+ const p=P(V.pid),nm=rn(p),b=body();if(!b.length)return;
+ const mk=x=>nm?x.split(nm).join('[PATIENT]'):x,rs=x=>x.split('[PATIENT]').join(nm);
+ $('#rmsg').textContent=T('Thinking…');
+ try{
+  const prompt='Improve this speech-language therapy report. Keep the same number and order of sections and keep every fact unchanged. Do not invent data. Write clearly and professionally in '+LN(V.rl)+'. Keep any [PATIENT] placeholder as is. Return only a valid JSON array of strings: one polished text per section, same order. Sections:\n'+JSON.stringify(b.map(x=>({title:x.t,text:mk(x.v)})));
+  const out=await gem([{r:'u',t:prompt}],SYS(V.rl),1);
+  let arr;
+  try{arr=JSON.parse(out.replace(/```json|```/gi,'').trim())}catch(parseErr){const match=out.match(/\[[\s\S]*\]/);if(match)arr=JSON.parse(match[0])}
+  if(!Array.isArray(arr))throw{code:'format'};
+  document.querySelectorAll('.rs textarea').forEach((t,i)=>{if(typeof arr[i]=='string'&&arr[i].trim())t.value=rs(arr[i])});
+  $('#rmsg').textContent=T('Report improved by AI. Please review it.')+' '+T('Review identifying details before sending.');
+ }catch(e){$('#rmsg').textContent=aiErr(e)}
+}
+function aiCard(){return `<div class="card sec" style="--c:#0ea5e9"><h3>AI (OpenRouter)</h3><div class=mut>Direct connection from this personal app. Your API key is stored in this app on this device. Anyone who can inspect or extract the app data may be able to retrieve it. Do not share this APK.</div><label>OpenRouter API key</label><input id=orkey type=password autocomplete=off value="${esc(OR_KEY())}" placeholder="sk-or-v1-..."><label>Model ID (free only)</label><input id=ormodel value="${esc(OR_MODEL())}" placeholder="openrouter/free"><button class="b s" onclick="saveAI()">Save and test</button><div class=am id=aimsg></div><div class=mut>To prevent accidental charges, SpeechCare accepts <code>openrouter/free</code> or a model ID ending in <code>:free</code> only. Free-model availability and request limits can change. <a href="https://openrouter.ai/collections/free-models" target="_blank" rel="noopener">Browse free models</a></div><div class=mut>Do not send patient names, contact details, or other identifying information. AI prompts are sent to OpenRouter.</div></div>`}
+async function saveAI(){const key=$('#orkey').value.trim(),model=$('#ormodel').value.trim()||'openrouter/free',msg=$('#aimsg');if(!key){msg.textContent='Please enter your OpenRouter API key.';msg.className='am err';return}if(!isFreeModel(model)){msg.textContent='To avoid charges, use openrouter/free or a model ID ending in :free.';msg.className='am err';return}try{localStorage.setItem('speechcare_or_key',key);localStorage.setItem('speechcare_or_model',model)}catch(e){msg.textContent='Could not save the key on this device. Check available app storage.';msg.className='am err';return}await gtest('#aimsg')}
 function setLang(l){PR.lang=l;V.rl=l;applyPref();if(U)go();else authView()}
 function pwr(){fa.sendPasswordResetEmail(S.me.email).then(()=>toast('Reset email sent. Check your inbox.'),e=>toast(ER[e.code]||'Something went wrong. Try again.'))}
 function set(){const u=fa&&fa.currentUser,pv=!u||U.uid=='preview',m=S.me,rows=[['Full name',m.name||'—'],['Email',m.email||'—'],['Email verified',pv?'—':(u.emailVerified?'Yes':'No')],['Sign-in method',pv?'Offline preview':'Email and password'],['Member since',u&&u.metadata&&u.metadata.creationTime?new Date(u.metadata.creationTime).toLocaleDateString(LCS[PR.lang]):'—']];
