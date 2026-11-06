@@ -40,3 +40,12 @@ The workflow uses Node.js 20 and Java 17, creates the Capacitor Android project,
 ## App icon
 
 `android-res/` contains only valid Android resource folders and launcher image sizes derived from the original SpeechCare logo supplied for this project. The original logo is preserved separately in `assets/SpeechCare_original_logo.png`; it is not copied into Android’s `res/` root.
+
+
+## Updated navigation and AI experience
+
+- Main navigation is in the bottom bar: Home, Sessions, Patients, and Reports. These items are not duplicated in the side menu. Profile appears at the top of the side menu.
+- The floating **AI** button opens one persistent SpeechCare assistant panel. General questions work without selecting a patient; patient context is optional.
+- The AI assistant connects directly to OpenRouter. Add the key in Settings → AI and keep the model set to `openrouter/free` (or another model ending in `:free`). Do not commit or share the key.
+- The Android launcher icons are generated from `assets/SpeechCare_original_logo.png`, the exact original logo supplied for this app.
+- The AI panel stays mounted while chat messages update to avoid restarting the panel animation and flickering.
