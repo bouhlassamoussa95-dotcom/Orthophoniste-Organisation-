@@ -1,6 +1,6 @@
 {
-  "appId": "com.chourouk.orthoassistant",
-  "appName": "Ortho Assistant",
+  "appId": "com.chourouk.speechcare",
+  "appName": "SpeechCare",
   "webDir": "www",
   "android": { "allowMixedContent": false }
 }
